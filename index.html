@@ -79,9 +79,8 @@
     border-bottom:1px solid transparent; transition:border-color .4s ease, background .4s ease;
   }
   header.bar.stuck{ border-bottom-color:var(--line); }
-  .word{ grid-area:brand; display:flex; align-items:baseline; gap:9px; min-width:max-content; font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); }
-  .word b{ font-family:var(--font-display); font-weight:600; font-size:17px; letter-spacing:-.01em; text-transform:none; color:var(--ink); }
-  .word .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); transform:translateY(-1px); }
+  .word{ grid-area:brand; display:flex; align-items:center; min-width:max-content; line-height:0; color:inherit; text-decoration:none; }
+  .word img{ display:block; width:clamp(158px,13vw,190px); height:auto; }
   .bar-cta{ grid-area:cta; display:flex; align-items:center; justify-self:end; gap:18px; min-width:max-content; }
   .bar-cta .iss{ font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--ink-3); text-transform:uppercase; }
   .site-nav{
@@ -133,14 +132,14 @@
       grid-template-areas:"brand" "pages";
       gap:8px; padding:10px 16px;
     }
-    .word{ min-width:0; gap:7px; font-size:10px; letter-spacing:.1em; }
-    .word b{ font-size:15px; }
+    .word{ min-width:0; justify-self:center; }
+    .word img{ width:164px; max-width:68vw; height:auto; }
     .bar-cta{ display:none; }
     .bar-cta .iss{ display:none; }
     .site-nav a{ padding:6px 10px; font-size:11.5px; letter-spacing:.13em; }
     .week-nav{ display:none; }
   }
-  @media (max-width:390px){ .word > span:last-child{ display:none; } }
+  @media (max-width:390px){ .word img{ width:154px; } }
 
   .btn{
     font-family:var(--font-body); font-weight:600; font-size:14px;
@@ -709,7 +708,9 @@
   <div class="progress" id="progress"></div>
 
   <header class="bar" id="bar">
-    <div class="word"><span class="dot"></span><b>Nature Coast Pulse</b><span>Weekly</span></div>
+    <a class="word" href="index.html" aria-label="Nature Coast Insider home">
+      <img src="assets/nature-coast-insider-header-icon.png" alt="Nature Coast Insider">
+    </a>
     <nav class="site-nav" aria-label="Guide pages">
       <a href="index.html" aria-current="page">This Week</a>
       <a href="daytrips.html">Day Trips</a>
