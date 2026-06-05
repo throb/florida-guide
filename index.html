@@ -49,12 +49,12 @@
   }
 
   *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:smooth; max-width:100%; overflow-x:hidden; }
   body{
     margin:0; background:var(--paper); color:var(--ink);
     font-family:var(--font-body); font-size:calc(18px * var(--body-scale)); line-height:1.6;
     -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-    transition:background .5s ease, color .5s ease;
+    transition:background .5s ease, color .5s ease; max-width:100%; overflow-x:hidden;
   }
   ::selection{ background:var(--accent); color:#fff; }
   a{ color:inherit; }
@@ -75,7 +75,15 @@
   .word .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); transform:translateY(-1px); }
   .bar-cta{ display:flex; align-items:center; gap:18px; }
   .bar-cta .iss{ font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--ink-3); text-transform:uppercase; }
-  @media (max-width:620px){ .bar-cta .iss{ display:none; } }
+  @media (max-width:620px){
+    header.bar{ gap:12px; padding:12px 20px; }
+    .word{ min-width:0; gap:7px; font-size:10px; letter-spacing:.1em; }
+    .word b{ font-size:15px; }
+    .bar-cta{ flex:none; }
+    .bar-cta .iss{ display:none; }
+    .bar-cta .btn{ padding:8px 13px; font-size:13px; }
+  }
+  @media (max-width:390px){ .word > span:last-child{ display:none; } }
 
   .btn{
     font-family:var(--font-body); font-weight:600; font-size:14px;
@@ -116,6 +124,7 @@
   /* ---------- masthead ---------- */
   .mast{ padding:118px 0 36px; }
   .mast .dateline{ display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin-top:14px; color:var(--ink-3); font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; }
+  .mast .dateline span{ min-width:0; overflow-wrap:anywhere; }
   .mast .dateline .pill{ border:1px solid var(--line-2); border-radius:999px; padding:3px 11px; color:var(--ink-2); }
   .mast h1{ font-size:clamp(38px,6.2vw,76px); margin:30px 0 0; font-weight:500; max-width:14ch; }
   .mast h1 em{ font-style:italic; color:var(--accent-ink); }
@@ -123,6 +132,12 @@
   .hero-img{ margin-top:46px; }
   .hero-img .ph{ aspect-ratio:21/9; }
   .hero-cap{ margin-top:10px; font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--ink-3); }
+  @media (max-width:520px){
+    .mast{ padding-top:96px; }
+    .mast .dateline{ display:grid; gap:9px; align-items:start; }
+    .mast .dateline .pill{ justify-self:start; }
+    .hero-cap{ overflow-wrap:anywhere; }
+  }
 
   /* ---------- section frame ---------- */
   section{ padding:62px 0; border-top:1px solid var(--line); }
@@ -202,6 +217,56 @@
   @keyframes pop{ 0%{ transform:scale(.82); opacity:0; } 60%{ transform:scale(1.06); } 100%{ transform:scale(1); opacity:1; } }
   .linkbtn{ background:none; border:0; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--ink-3); cursor:pointer; text-decoration:underline; text-underline-offset:3px; padding:0; }
   .linkbtn:hover{ color:var(--ink); }
+
+  /* ---------- durable guide modules ---------- */
+  .module-note{ margin-top:18px; color:var(--ink-2); max-width:62ch; }
+  .feature-trip{
+    display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(22px,4vw,46px);
+    align-items:stretch; background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:18px; overflow:hidden; box-shadow:var(--shadow);
+  }
+  .feature-trip .ph{ border:0; border-radius:0; min-height:320px; }
+  .feature-body{ padding:clamp(24px,4vw,40px); display:flex; flex-direction:column; justify-content:center; }
+  .feature-body h3{ font-size:clamp(28px,4vw,46px); }
+  .feature-body p{ color:var(--ink-2); margin:16px 0 0; max-width:54ch; }
+  .stop-list{ list-style:none; margin:22px 0 0; padding:0; display:grid; gap:10px; }
+  .stop-list li{ display:flex; gap:10px; align-items:baseline; color:var(--ink); }
+  .stop-list b{ font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); min-width:72px; }
+  .archive-head{ margin:36px 0 16px; display:flex; justify-content:space-between; gap:18px; align-items:end; flex-wrap:wrap; }
+  .archive-head h3{ font-size:clamp(24px,3vw,34px); }
+  .archive-head p{ margin:6px 0 0; color:var(--ink-2); max-width:58ch; }
+  .trip-archive, .eats-grid, .evergreen-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .trip-card, .eat-card{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:16px;
+    padding:22px; min-height:100%; display:flex; flex-direction:column; text-decoration:none; color:inherit;
+    transition:transform .16s ease, border-color .16s ease, background .16s ease;
+  }
+  .trip-card:hover, .eat-card:hover{ transform:translateY(-2px); border-color:var(--accent-line); background:var(--accent-soft); }
+  .card-top{ display:flex; justify-content:space-between; gap:12px; align-items:start; margin-bottom:14px; }
+  .card-kicker{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--earth-ink); }
+  .card-date{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-3); white-space:nowrap; }
+  .trip-card h4, .eat-card h4{ font-family:var(--font-display); font-weight:500; font-size:24px; line-height:1.08; margin:0; }
+  .trip-card p, .eat-card p{ color:var(--ink-2); margin:12px 0 0; font-size:.94em; }
+  .card-tags{ margin-top:16px; display:flex; gap:7px; flex-wrap:wrap; }
+  .card-link{ margin-top:auto; padding-top:18px; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--accent-ink); text-transform:uppercase; }
+  .eats-grid{ margin-top:8px; }
+  .eat-card.featured{ background:var(--earth-soft); border-color:var(--earth-line); }
+  .eat-card.featured:hover{ background:color-mix(in oklab, var(--earth) 18%, var(--paper)); border-color:var(--earth); }
+  .rating-row{ margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+  .rating-row span{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-2); border:1px solid var(--line); border-radius:999px; padding:4px 9px; background:var(--paper); }
+  .sponsor-strip{
+    margin-top:20px; border:1px dashed var(--earth-line); background:var(--earth-soft);
+    border-radius:16px; padding:20px 22px; display:flex; gap:18px; justify-content:space-between; align-items:center; flex-wrap:wrap;
+  }
+  .sponsor-strip p{ margin:0; color:var(--ink-2); max-width:64ch; }
+  @media (max-width:900px){
+    .feature-trip{ grid-template-columns:1fr; }
+    .feature-trip .ph{ min-height:260px; aspect-ratio:16/10; }
+    .trip-archive, .eats-grid, .evergreen-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:600px){
+    .trip-archive, .eats-grid, .evergreen-grid{ grid-template-columns:1fr; }
+  }
 
   /* ---------- meetups ---------- */
   .meetups{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,64px); }
@@ -580,11 +645,66 @@
       </div>
     </section>
 
+    <!-- DAY TRIPS LIBRARY -->
+    <section id="daytrips" data-screen-label="Day Trips">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="no">04</span>
+          <div>
+            <h2>Day Trips</h2>
+            <p class="sub">A new route every week, plus a permanent archive you can come back to when the weekend opens up.</p>
+          </div>
+        </div>
+        <div id="daytrip-feature" class="feature-trip rv"></div>
+        <div class="archive-head rv">
+          <div>
+            <h3>Trip archive</h3>
+            <p>Each weekly idea becomes a durable guide with stops, timing, verified links, and sponsor inventory that keeps working after the issue rolls over.</p>
+          </div>
+          <a href="#advertise" class="btn ghost">Sponsor a route →</a>
+        </div>
+        <div id="daytrip-archive" class="trip-archive"></div>
+        <p class="ev-note">Archive seed checked June 4, 2026. New weekly day trips should be added as records, not hand-built sections.</p>
+      </div>
+    </section>
+
+    <!-- EATS -->
+    <section id="eats" data-screen-label="Eats">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="no">05</span>
+          <div>
+            <h2>Eats</h2>
+            <p class="sub">A daily-changing food rail: new finds, recent buzz, waterfront classics, breakfast stops, and the places worth driving a little farther for.</p>
+          </div>
+        </div>
+        <div class="archive-head rv" style="margin-top:0;">
+          <div>
+            <h3>Today’s three</h3>
+            <p>Top slots are meant to refresh often. Publish only restaurants with verified source links, and move proven picks into the evergreen guide below.</p>
+          </div>
+          <a href="#advertise" class="btn ghost">Sponsor Eats →</a>
+        </div>
+        <div id="eats-radar" class="eats-grid"></div>
+        <div class="archive-head rv">
+          <div>
+            <h3>Highly rated and off-the-obvious-path</h3>
+            <p>Evergreen local picks that give the guide depth beyond whatever is newest this morning.</p>
+          </div>
+        </div>
+        <div id="eats-evergreen" class="evergreen-grid"></div>
+        <div class="sponsor-strip rv">
+          <p><b>Restaurant sponsor idea:</b> one category sponsor for Eats, plus native placement on relevant day trips like seafood runs, breakfast loops, date nights, and post-spring lunch stops.</p>
+          <a href="mailto:sponsors@naturecoastpulse.com?subject=Eats%20sponsorship%20inquiry" class="btn earth">Ask about Eats sponsorship →</a>
+        </div>
+      </div>
+    </section>
+
     <!-- MEETUPS -->
     <section id="meetups" data-screen-label="Community Events">
       <div class="wrap">
         <div class="sec-head rv">
-          <span class="no">04</span>
+          <span class="no">06</span>
           <div>
             <h2>Community Events</h2>
             <p class="sub">Actual community calendar picks pulled from official local sources — water days, markets, classes, and local gatherings worth planning around.</p>
@@ -641,7 +761,7 @@
     <section id="conditions" data-screen-label="Conditions">
       <div class="wrap">
         <div class="sec-head rv">
-          <span class="no">05</span>
+          <span class="no">07</span>
           <div>
             <h2>Conditions</h2>
             <p class="sub">What the weather and water are doing right now — and anything that'll mess with your plans this week.</p>
@@ -694,7 +814,7 @@
     <section id="advertise" data-screen-label="Advertise">
       <div class="wrap">
         <div class="sec-head rv">
-          <span class="no">06</span>
+          <span class="no">08</span>
           <div>
             <h2>Advertise</h2>
             <p class="sub">Early-stage local sponsorship — useful placement for businesses that genuinely fit the guide. No fake audience numbers, no media-kit nonsense.</p>
@@ -791,6 +911,151 @@
         if (rail) rail.appendChild(a);
       });
       var railLinks = rail ? Array.prototype.slice.call(rail.children) : [];
+
+      var dayTrips = [
+        {
+          issue: 'Issue 001',
+          date: 'June 4, 2026',
+          status: 'This week',
+          title: 'Kings Bay Clear-Water Loop',
+          dek: 'A bright, easy Crystal River day: clear kayak or snorkel early, local lunch, Hunter Springs float, and a Fort Island sunset.',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Three_sisters_springs_near_crystal_river_national_wildlife_refuge.jpg?width=1100',
+          tags: ['Water', 'Easy', 'First trip'],
+          stops: [
+            ['Morning', 'Kings Bay paddle or snorkel'],
+            ['Midday', 'Biscuit Barn or Sadie\'s'],
+            ['Afternoon', 'Hunter Springs float'],
+            ['Sunset', 'Fort Island Gulf Beach']
+          ],
+          href: 'https://www.fws.gov/apps/refuge/crystal-river/visit-us'
+        },
+        {
+          issue: 'Archive',
+          date: 'Classic',
+          status: 'Day trip',
+          title: 'Silver Springs Boat and Paddle Day',
+          dek: 'Glass-bottom boats for the timeless view, then a slow paddle if you want the river to stretch out a little longer.',
+          tags: ['Springs', 'Family', 'Ocala'],
+          href: 'https://silversprings.com/plan-your-day/glass-bottom-boats/'
+        },
+        {
+          issue: 'Archive',
+          date: 'Sunset',
+          status: 'Food loop',
+          title: 'Ozello Seafood Sunset Run',
+          dek: 'Cruise the marsh road at golden hour, stop for Ozello seafood, and make the whole evening feel like a small discovery.',
+          tags: ['Seafood', 'Sunset', 'Drive'],
+          href: 'https://www.discovercrystalriverfl.com/directory/ozello-park/'
+        },
+        {
+          issue: 'Archive',
+          date: 'Easy',
+          status: 'Beach',
+          title: 'Fort Island Gulf Beach Reset',
+          dek: 'A low-friction sunset plan with Gulf air, picnic potential, and a quick route back into Crystal River for dinner.',
+          tags: ['Beach', 'Sunset', 'Easy'],
+          href: 'https://www.discovercrystalriverfl.com/directory/fort-island-gulf-beach/'
+        }
+      ];
+
+      var eats = [
+        {
+          lane: 'Today\'s radar',
+          title: 'Backwater Fins',
+          dek: 'Ozello seafood, Cajun-leaning plates, and brunch hours that make it a strong day-trip lunch anchor.',
+          place: 'Ozello Trail · seafood',
+          badges: ['Waterfront', 'Brunch', 'Seafood'],
+          href: 'https://backwater-fins.com/',
+          featured: true
+        },
+        {
+          lane: 'Waterfront classic',
+          title: 'Peck\'s Old Port Cove',
+          dek: 'A long-running Ozello stop for seafood, old-Florida atmosphere, and a route-friendly dinner after the marsh drive.',
+          place: 'Ozello · seafood',
+          badges: ['Classic', 'Dinner', 'Drive-worthy'],
+          href: 'https://www.discovercrystalriverfl.com/directory/pecks-old-port-cove/',
+          featured: true
+        },
+        {
+          lane: 'Unique local pick',
+          title: 'The Freezer Tiki Bar',
+          dek: 'Casual Homosassa energy, shrimp, cold drinks, and the kind of local texture visitors remember.',
+          place: 'Homosassa · tiki bar',
+          badges: ['Unique', 'Casual', 'Shrimp'],
+          href: 'https://the-freezer-homosassa.com/',
+          featured: true
+        },
+        {
+          lane: 'Breakfast loop',
+          title: 'The Biscuit Barn',
+          dek: 'A useful breakfast anchor before springs, paddles, errands, or a Crystal River loop.',
+          place: 'Crystal River · breakfast',
+          badges: ['Breakfast', 'Local', 'Quick stop'],
+          href: 'https://www.discovercrystalriverfl.com/directory/biscuit-barn-north-crystal-river-breakfast-diners/'
+        },
+        {
+          lane: 'Local lunch',
+          title: 'Sadie\'s Corner Kitchen',
+          dek: 'A small local kitchen that fits the easy lunch slot in the Kings Bay day-trip loop.',
+          place: 'Crystal River · lunch',
+          badges: ['Local', 'Lunch', 'Loop stop'],
+          href: 'https://m.facebook.com/SadiesCornerKitchen/'
+        }
+      ];
+
+      function esc(str){
+        return String(str == null ? '' : str).replace(/[&<>"']/g, function(ch){
+          return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[ch];
+        });
+      }
+      function chips(items){
+        return (items || []).map(function(item){ return '<span class="chip">' + esc(item) + '</span>'; }).join('');
+      }
+      function renderDayTrips(){
+        var feature = document.getElementById('daytrip-feature');
+        var archive = document.getElementById('daytrip-archive');
+        if(!feature || !archive) return;
+        var current = dayTrips[0];
+        feature.innerHTML =
+          '<div class="ph"><img alt="' + esc(current.title) + '" data-photo src="' + esc(current.image) + '"><span class="tag">PHOTO · ' + esc(current.title) + '</span></div>' +
+          '<div class="feature-body">' +
+            '<div class="card-kicker">' + esc(current.status) + ' · ' + esc(current.issue) + '</div>' +
+            '<h3>' + esc(current.title) + '</h3>' +
+            '<p>' + esc(current.dek) + '</p>' +
+            '<ul class="stop-list">' + current.stops.map(function(stop){ return '<li><b>' + esc(stop[0]) + '</b><span>' + esc(stop[1]) + '</span></li>'; }).join('') + '</ul>' +
+            '<div class="card-tags">' + chips(current.tags) + '</div>' +
+            '<div class="bl-row" style="margin-top:22px;"><a class="biz" href="' + esc(current.href) + '" target="_blank" rel="noopener">Verified route source <span class="ar">↗</span></a><a class="biz sponsor" href="#advertise">Sponsor this route <span class="tagad">Sponsor</span></a></div>' +
+          '</div>';
+        archive.innerHTML = dayTrips.slice(1).map(function(trip){
+          return '<a class="trip-card rv" href="' + esc(trip.href) + '" target="_blank" rel="noopener">' +
+            '<div class="card-top"><span class="card-kicker">' + esc(trip.status) + '</span><span class="card-date">' + esc(trip.date) + '</span></div>' +
+            '<h4>' + esc(trip.title) + '</h4>' +
+            '<p>' + esc(trip.dek) + '</p>' +
+            '<div class="card-tags">' + chips(trip.tags) + '</div>' +
+            '<span class="card-link">Open verified source ↗</span>' +
+          '</a>';
+        }).join('');
+      }
+      function renderEats(){
+        var radar = document.getElementById('eats-radar');
+        var evergreen = document.getElementById('eats-evergreen');
+        if(!radar || !evergreen) return;
+        function card(item){
+          return '<a class="eat-card rv' + (item.featured ? ' featured' : '') + '" href="' + esc(item.href) + '" target="_blank" rel="noopener">' +
+            '<div class="card-top"><span class="card-kicker">' + esc(item.lane) + '</span></div>' +
+            '<h4>' + esc(item.title) + '</h4>' +
+            '<p>' + esc(item.dek) + '</p>' +
+            '<div class="rating-row"><span>' + esc(item.place) + '</span></div>' +
+            '<div class="card-tags">' + chips(item.badges) + '</div>' +
+            '<span class="card-link">Open verified source ↗</span>' +
+          '</a>';
+        }
+        radar.innerHTML = eats.filter(function(item){ return item.featured; }).map(card).join('');
+        evergreen.innerHTML = eats.filter(function(item){ return !item.featured; }).map(card).join('');
+      }
+      renderDayTrips();
+      renderEats();
 
       function onScroll(){
         var st = window.scrollY || document.documentElement.scrollTop;
