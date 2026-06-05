@@ -11,6 +11,7 @@
     --font-mono: "Spline Sans Mono", ui-monospace, monospace;
     --accent: #3a7fb5;   /* cool — Gulf blue */
     --earth:  #b0784f;   /* earthy — clay */
+    --leaf:   #668f68;   /* marsh green */
     --body-scale: 1;
 
     --paper:   oklch(0.975 0.008 96);
@@ -21,6 +22,9 @@
     --ink-3:   oklch(0.56 0.016 245);
     --line:    oklch(0.30 0.03 245 / 0.15);
     --line-2:  oklch(0.30 0.03 245 / 0.30);
+    --sun:      oklch(0.78 0.12 75);
+    --cloud:    oklch(0.74 0.018 250);
+    --storm:    oklch(0.58 0.07 245);
 
     --accent-soft: color-mix(in oklab, var(--accent) 13%, var(--paper));
     --accent-line: color-mix(in oklab, var(--accent) 45%, var(--paper));
@@ -39,6 +43,9 @@
     --ink-3:   oklch(0.64 0.018 250);
     --line:    oklch(0.85 0.02 95 / 0.15);
     --line-2:  oklch(0.85 0.02 95 / 0.28);
+    --sun:      oklch(0.74 0.11 72);
+    --cloud:    oklch(0.50 0.02 250);
+    --storm:    oklch(0.44 0.07 245);
     --accent-soft: color-mix(in oklab, var(--accent) 22%, var(--paper));
     --accent-line: color-mix(in oklab, var(--accent) 52%, var(--paper));
     --accent-ink:  color-mix(in oklab, var(--accent) 80%, var(--ink));
@@ -79,39 +86,46 @@
   .bar-cta .iss{ font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--ink-3); text-transform:uppercase; }
   .site-nav{
     grid-area:pages; display:flex; align-items:center; justify-self:center; justify-content:center; gap:0;
-    border:1px solid var(--line); border-radius:12px; overflow:hidden;
-    background:color-mix(in oklab, var(--paper) 64%, transparent);
+    border:0; border-radius:0; overflow:visible; background:transparent;
   }
   .site-nav a{
-    font-family:var(--font-body); font-weight:700; font-size:13px; text-decoration:none;
-    border-left:1px solid var(--line); padding:7px 13px;
-    background:transparent;
-    transition:background .16s ease, border-color .16s ease, color .16s ease;
+    position:relative; font-family:var(--font-mono); font-weight:700; font-size:12.5px; letter-spacing:.16em;
+    text-transform:uppercase; text-decoration:none; color:var(--ink-3);
+    border:0; padding:7px 15px; background:transparent;
+    transition:color .16s ease;
   }
-  .site-nav a:first-child{ border-left:0; }
-  .site-nav a:hover, .site-nav a[aria-current="page"]{ background:var(--accent-soft); color:var(--accent-ink); }
+  .site-nav a + a::before{
+    content:"|"; position:absolute; left:-1px; top:50%; transform:translateY(-50%);
+    color:var(--line-2); font-weight:600; letter-spacing:0;
+  }
+  .site-nav a:hover, .site-nav a[aria-current="page"]{ color:var(--accent-ink); }
   .week-nav{
-    grid-area:week; width:100%; display:flex; flex-wrap:wrap; align-items:stretch; justify-content:center;
-    gap:1px; border:1px solid var(--line); border-radius:12px; overflow:hidden;
-    background:var(--line);
+    grid-area:week; width:calc(100% + clamp(36px,8vw,104px));
+    margin:2px calc(-1 * clamp(18px,4vw,52px)) -14px;
+    display:flex; flex-wrap:nowrap; align-items:stretch; justify-content:space-between;
+    gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+    background:color-mix(in oklab, var(--paper) 92%, transparent);
   }
+  .week-nav::-webkit-scrollbar{ display:none; }
   .week-nav a{
-    flex:1 1 96px; min-height:34px; display:inline-flex; align-items:center; justify-content:center;
-    padding:7px 10px; background:color-mix(in oklab, var(--paper) 88%, transparent);
-    color:var(--ink-2); font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em;
+    flex:1 0 max-content; min-height:42px; display:inline-flex; align-items:center; justify-content:center;
+    padding:11px 15px 10px; background:transparent; border-bottom:2px solid transparent;
+    color:var(--ink-3); font-family:var(--font-mono); font-size:10.5px; letter-spacing:.16em;
     text-transform:uppercase; text-decoration:none; text-align:center;
-    transition:background .16s ease, color .16s ease;
+    white-space:nowrap; transition:color .16s ease, border-color .16s ease, background .16s ease;
   }
-  .week-nav a:hover, .week-nav a.active{ background:var(--accent-soft); color:var(--accent-ink); }
+  .week-nav a:hover{ color:var(--ink); background:color-mix(in oklab, var(--paper-2) 54%, transparent); }
+  .week-nav a.active{ color:var(--accent-ink); border-bottom-color:var(--accent); background:transparent; }
   @media (max-width:920px){
     header.bar{
       grid-template-columns:1fr auto;
       grid-template-areas:"brand cta" "pages pages" "week week";
     }
-    .site-nav{ width:100%; justify-self:stretch; justify-content:flex-start; flex-wrap:wrap; overflow:hidden; }
-    .site-nav a{ flex:1 1 auto; text-align:center; }
+    .site-nav{ width:100%; justify-self:stretch; justify-content:center; flex-wrap:wrap; overflow:visible; }
+    .site-nav a{ flex:0 0 auto; text-align:center; }
     .week-nav{ justify-content:flex-start; }
-    .week-nav a{ flex:1 1 86px; }
+    .week-nav a{ flex:0 0 auto; }
   }
   @media (max-width:620px){
     header.bar{
@@ -123,7 +137,7 @@
     .word b{ font-size:15px; }
     .bar-cta{ display:none; }
     .bar-cta .iss{ display:none; }
-    .site-nav a{ padding:7px 9px; font-size:12.5px; }
+    .site-nav a{ padding:6px 10px; font-size:11.5px; letter-spacing:.13em; }
     .week-nav{ display:none; }
   }
   @media (max-width:390px){ .word > span:last-child{ display:none; } }
@@ -159,32 +173,120 @@
       repeating-linear-gradient(135deg, color-mix(in oklab, var(--accent) 11%, var(--paper-2)) 0 13px, var(--paper-2) 13px 26px);
     border:1px solid var(--line); display:flex; align-items:flex-end;
   }
+  .bmedia .ph, .spot .ph{
+    box-shadow:0 22px 46px -34px oklch(0.18 0.03 245 / .62), 0 2px 8px oklch(0.18 0.03 245 / .10);
+  }
   .ph > img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .9s ease; z-index:1; }
   .ph > img.loaded{ opacity:1; }
   .ph .tag{ position:relative; z-index:2; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--ink-2); background:color-mix(in oklab,var(--paper) 84%, transparent); border:1px solid var(--line); border-radius:7px; padding:5px 10px; margin:14px; }
   .ph.has-img .tag{ display:none; }
 
   /* ---------- masthead ---------- */
-  .mast{ padding:168px 0 36px; }
-  .mast .dateline{ display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin-top:14px; color:var(--ink-3); font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; }
+  .mast{ padding:156px 0 58px; }
+  .mast .dateline{ display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin-top:16px; color:var(--ink-3); font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; }
   .mast .dateline span{ min-width:0; overflow-wrap:anywhere; }
-  .mast .dateline .pill{ border:1px solid var(--line-2); border-radius:999px; padding:3px 11px; color:var(--ink-2); }
-  .mast h1{ font-size:clamp(38px,6.2vw,76px); margin:30px 0 0; font-weight:500; max-width:14ch; }
+  .mast .dateline .pill{ border:1px solid var(--accent-line); border-radius:10px; padding:3px 11px; color:var(--accent-ink); background:var(--accent-soft); }
+  .mast .dateline .live{ display:inline-flex; align-items:center; gap:7px; }
+  .blip{ width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px color-mix(in oklab, var(--accent) 16%, transparent); }
+  .mast h1{ font-size:clamp(42px,4.8vw,62px); margin:26px 0 0; font-weight:500; max-width:none; }
   .mast h1 em{ font-style:italic; color:var(--accent-ink); }
-  .mast .lead{ margin-top:26px; max-width:680px; }
-  .hero-img{ margin-top:46px; }
-  .hero-img .ph{ aspect-ratio:21/9; }
+  .mast .lead{ margin-top:22px; max-width:820px; font-size:clamp(20px,2vw,24px); }
+  .hero-stage{
+    position:relative; display:grid; align-items:start; gap:0;
+    min-height:clamp(500px,41vw,570px); padding:0 clamp(16px,2.4vw,30px) 0;
+  }
+  .hero-ph{ position:absolute; top:0; left:0; right:0; height:clamp(290px,31vw,410px); min-height:0; border-radius:18px; box-shadow:var(--shadow); }
+  .hero-box{
+    width:min(1000px, 100%); margin:clamp(170px,18vw,226px) auto 0;
+    position:relative; z-index:3; padding:clamp(28px,3.6vw,44px);
+    background:linear-gradient(180deg, color-mix(in oklab, var(--accent-soft) 58%, var(--paper) 36%) 0%, color-mix(in oklab, var(--paper) 96%, transparent) 78%);
+    border:1px solid color-mix(in oklab, var(--accent-line) 34%, var(--line));
+    border-radius:18px; box-shadow:0 26px 70px -44px oklch(0.2 0.03 245 / .62), 0 2px 8px oklch(0.2 0.03 245 / .08);
+    backdrop-filter:blur(12px) saturate(1.06);
+  }
   .hero-cap{ margin-top:10px; font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--ink-3); }
   @media (max-width:520px){
     .mast{ padding-top:126px; }
-    .mast .dateline{ display:grid; gap:9px; align-items:start; }
+    .mast h1{ font-size:34px; line-height:1.03; max-width:none; margin-top:18px; }
+    .mast .lead{ font-size:18px; line-height:1.36; margin-top:18px; }
+    .mast .dateline{ display:grid; gap:8px; align-items:start; font-size:10.5px; }
     .mast .dateline .pill{ justify-self:start; }
+    .hero-stage{ min-height:0; padding:0; display:block; }
+    .hero-ph{ position:relative; inset:auto; height:auto; }
+    .hero-ph{ aspect-ratio:16/11; min-height:220px; border-radius:14px; }
+    .hero-box{ width:calc(100% - 24px); margin:-58px 12px 0; border-radius:14px; padding:22px 20px; }
     .hero-cap{ overflow-wrap:anywhere; }
   }
 
+  /* ---------- today module ---------- */
+  .daybyday{ padding:42px 0 58px; border-top:0; }
+  .today-row{ display:grid; grid-template-columns:1.08fr .92fr; gap:clamp(20px,3.4vw,44px); align-items:stretch; }
+  .today-card{
+    position:relative; overflow:hidden; border-radius:18px; border:1px solid var(--line);
+    background:
+      radial-gradient(130% 120% at 12% 0%, color-mix(in oklab, var(--sun) 24%, var(--paper)), transparent 55%),
+      radial-gradient(120% 130% at 100% 100%, color-mix(in oklab, var(--accent) 17%, var(--paper)), transparent 58%),
+      var(--paper);
+    padding:clamp(24px,3vw,38px); display:flex; flex-direction:column; min-height:300px; box-shadow:var(--shadow);
+  }
+  .today-card .stamp{ display:flex; align-items:center; gap:12px; }
+  .today-card .day-name{ font-family:var(--font-mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--earth-ink); }
+  .today-card .day-date{ font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; color:var(--ink-3); margin-top:2px; }
+  .today-card .ritual{ margin-top:18px; font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-ink); }
+  .today-card h3{ font-size:clamp(26px,3.2vw,38px); margin:8px 0 0; max-width:18ch; }
+  .today-card p{ margin:14px 0 0; color:var(--ink-2); max-width:42ch; }
+  .today-card .tline{ margin-top:auto; padding-top:22px; display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; }
+  .today-card .tmeta{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.03em; color:var(--ink-3); display:inline-flex; align-items:center; gap:7px; }
+  .today-card .tmeta b{ color:var(--earth-ink); font-weight:600; }
+  .weekrail{ display:flex; flex-direction:column; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:var(--paper); box-shadow:0 10px 30px -26px oklch(0.2 0.03 245 / .5); }
+  .weekrail .wr-head{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 18px; border-bottom:1px solid var(--line); }
+  .weekrail .wr-head .t{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); }
+  .weekrail .wr-head .scallop{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.04em; color:var(--earth-ink); white-space:nowrap; }
+  .daycell{ display:grid; grid-template-columns:46px 1fr auto auto; gap:14px; align-items:center; padding:11px 18px; border-top:1px solid var(--line); transition:background .18s ease; }
+  .daycell:first-of-type{ border-top:0; }
+  .daycell:hover{ background:var(--paper-2); }
+  .daycell .dc-day{ text-align:center; }
+  .daycell .dc-day .dn{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); display:block; }
+  .daycell .dc-day .dd{ font-family:var(--font-display); font-size:22px; line-height:1; color:var(--ink); display:block; margin-top:2px; }
+  .daycell .dc-pick{ font-size:14px; color:var(--ink); line-height:1.32; }
+  .daycell .dc-pick small{ display:block; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.04em; color:var(--ink-3); margin-top:2px; }
+  .daycell.is-today{ background:var(--accent-soft); }
+  .daycell.is-today .dc-day .dd{ color:var(--accent-ink); }
+  .daycell.is-today .dc-pick{ font-weight:600; }
+  .daycell .nowtag{ display:none; font-family:var(--font-mono); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:#fff; background:var(--accent); border-radius:5px; padding:2px 6px; }
+  .daycell.is-today .nowtag{ display:inline-flex; }
+  .wx{ width:38px; height:38px; border-radius:11px; flex:none; position:relative; border:1px solid var(--line); overflow:hidden; }
+  .wx.sun{ background:radial-gradient(circle at 50% 42%, var(--sun) 0 30%, color-mix(in oklab, var(--sun) 30%, var(--paper)) 64%, var(--paper) 100%); }
+  .wx.part{ background:radial-gradient(circle at 34% 36%, var(--sun) 0 26%, transparent 52%), linear-gradient(150deg, color-mix(in oklab, var(--sun) 22%, var(--paper)) 0 46%, color-mix(in oklab, var(--cloud) 55%, var(--paper)) 46% 100%); }
+  .wx.cloud{ background:linear-gradient(160deg, color-mix(in oklab, var(--cloud) 30%, var(--paper)), color-mix(in oklab, var(--cloud) 65%, var(--paper))); }
+  .wx.storm{ background:linear-gradient(160deg, color-mix(in oklab, var(--storm) 40%, var(--paper)), color-mix(in oklab, var(--storm) 78%, var(--paper))); }
+  .wx.storm::after{ content:""; position:absolute; left:52%; top:30%; width:5px; height:5px; background:var(--sun); transform:translateX(-50%) rotate(45deg); box-shadow:-1px 8px 0 -1px var(--sun); }
+  .wx.lg{ width:54px; height:54px; border-radius:15px; }
+  @media (max-width:880px){ .today-row{ grid-template-columns:1fr; } }
+  @media (max-width:520px){
+    .daycell{ grid-template-columns:42px 1fr auto; gap:10px; padding:12px 14px; }
+    .daycell .nowtag{ grid-column:2; width:max-content; }
+  }
+
   /* ---------- section frame ---------- */
-  section{ padding:62px 0; border-top:1px solid var(--line); scroll-margin-top:150px; background:var(--paper); }
-  main > section:nth-of-type(even){ background:color-mix(in oklab, var(--paper-2) 62%, var(--paper)); }
+  section{
+    padding:62px 0; border-top:1px solid var(--line-2); scroll-margin-top:150px; background:var(--paper);
+    box-shadow:inset 0 1px 0 color-mix(in oklab, #fff 52%, transparent);
+  }
+  #brief{ background:var(--paper); }
+  #today, #trip, #conditions, #tip{
+    background:linear-gradient(180deg, color-mix(in oklab, var(--accent) 13%, var(--paper)) 0%, color-mix(in oklab, var(--paper-2) 88%, var(--accent) 12%) 100%);
+  }
+  #spotlight, #guide-pages, #gems, #advertise{
+    background:linear-gradient(180deg, color-mix(in oklab, var(--earth) 17%, var(--paper)) 0%, color-mix(in oklab, var(--earth) 11%, var(--paper-2)) 100%);
+  }
+  #wildlife{
+    background:linear-gradient(180deg, color-mix(in oklab, var(--leaf) 18%, var(--paper)) 0%, color-mix(in oklab, var(--leaf) 10%, var(--paper-2)) 100%);
+  }
+  #meetups{
+    background:linear-gradient(180deg, color-mix(in oklab, var(--accent) 18%, var(--paper)) 0%, color-mix(in oklab, var(--accent) 10%, var(--paper-2)) 100%);
+  }
+  #onlyhere{ background:linear-gradient(180deg, color-mix(in oklab, var(--paper-3) 84%, var(--earth) 16%) 0%, color-mix(in oklab, var(--paper-3) 72%, var(--earth) 28%) 100%); }
   main > section.mast{ background:var(--paper); }
   main > section[hidden]{ display:none; }
   @media (max-width:820px){ section{ scroll-margin-top:190px; } }
@@ -193,52 +295,100 @@
   .sec-head .no{ font-family:var(--font-mono); font-size:12px; color:var(--earth-ink); letter-spacing:.1em; padding-top:6px; }
   .sec-head h2{ font-size:clamp(26px,3.4vw,40px); }
   .sec-head .sub{ color:var(--ink-2); margin:8px 0 0; max-width:560px; font-size:.95em; }
+  .sec-head::before{
+    content:""; width:8px; align-self:stretch; min-height:54px; border-radius:3px;
+    background:linear-gradient(180deg, var(--accent), var(--earth));
+    box-shadow:0 10px 22px -18px var(--accent);
+  }
+  #spotlight .sec-head::before, #guide-pages .sec-head::before, #gems .sec-head::before, #advertise .sec-head::before{ background:var(--earth); }
+  #meetups .sec-head::before, #wildlife .sec-head::before, #conditions .sec-head::before{ background:var(--accent); }
+
+  /* ---------- photo-led visual breaks ---------- */
+  .visual-break{
+    position:relative; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:var(--paper-3); min-height:260px; overflow:hidden; isolation:isolate;
+  }
+  .visual-break img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+  .visual-break::after{
+    content:""; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(90deg, oklch(0.17 0.035 245 / .76), oklch(0.17 0.035 245 / .38) 48%, transparent);
+  }
+  .visual-break .wrap{ position:relative; z-index:2; min-height:260px; display:flex; align-items:end; padding-top:44px; padding-bottom:38px; }
+  .break-copy{ max-width:520px; color:#fff; text-shadow:0 1px 2px oklch(0 0 0 / .35); }
+  .break-copy .kicker{ color:color-mix(in oklab, #fff 78%, var(--sun)); }
+  .break-copy h3{ font-size:clamp(28px,3.6vw,46px); margin-top:10px; }
+  .break-copy p{ margin:12px 0 0; color:oklch(0.94 0.012 95); max-width:48ch; }
+  .break-copy a{ display:inline-flex; margin-top:16px; color:#fff; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; text-decoration:none; border-bottom:1px solid color-mix(in oklab, #fff 56%, transparent); }
+  @media (max-width:680px){
+    .visual-break{ min-height:230px; }
+    .visual-break::after{ background:linear-gradient(0deg, oklch(0.17 0.035 245 / .78), oklch(0.17 0.035 245 / .22)); }
+    .visual-break .wrap{ min-height:230px; padding-top:34px; padding-bottom:30px; padding-right:48px; }
+  }
 
   /* ---------- briefing (editorial rows w/ photos) ---------- */
   .brief{ display:flex; flex-direction:column; }
-  .bitem{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(22px,4.5vw,60px); align-items:center; padding:48px 0; border-top:1px solid var(--line); }
+  .bitem{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(22px,4.5vw,60px); align-items:stretch; padding:48px 0; border-top:1px solid var(--line-2); }
   .bitem:first-child{ border-top:0; padding-top:10px; }
-  .bmedia .ph{ aspect-ratio:5/4; }
+  .bmedia{ display:flex; min-height:100%; }
+  .bmedia .ph{ flex:1; min-height:100%; aspect-ratio:auto; }
   .bitem:nth-child(even) .bmedia{ order:2; }
-  .bnum{ display:flex; align-items:baseline; gap:14px; }
+  .bnum{ display:flex; align-items:flex-end; gap:14px; }
   .bnum .n{ font-family:var(--font-display); font-size:clamp(38px,5vw,62px); line-height:.85; color:var(--accent-ink); font-weight:400; }
-  .blabel{ font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--earth-ink); border:1px solid var(--earth-line); border-radius:999px; padding:4px 12px; }
+  .blabel{
+    position:relative; display:inline-flex; padding:0 0 7px; margin:0 12px 13px 0;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--earth-ink);
+    border:0; border-radius:0;
+  }
+  .blabel::after{
+    content:""; position:absolute; left:0; bottom:0; width:120%; height:1px;
+    background:var(--earth-line);
+  }
   .btext h3{ font-size:clamp(22px,2.8vw,30px); font-weight:500; margin:16px 0 0; }
   .btext p{ margin:12px 0 0; color:var(--ink-2); max-width:46ch; }
   .where{ margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
   .chip{ font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--ink-2); background:var(--paper-2); border:1px solid var(--line); border-radius:7px; padding:5px 10px; }
   .bizlinks{ margin-top:20px; padding-top:16px; border-top:1px dashed var(--line-2); }
   .bl-label{ font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--earth-ink); }
-  .bl-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:11px; }
-  .biz{ display:inline-flex; align-items:center; gap:7px; font-family:var(--font-body); font-weight:500; font-size:13px; color:var(--ink); background:var(--paper); border:1px solid var(--line-2); border-radius:10px; padding:7px 14px; text-decoration:none; transition:transform .16s ease, border-color .16s ease, background .16s ease, color .16s ease; }
+  .bl-row{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:11px; }
+  .biz{ display:flex; align-items:center; justify-content:space-between; gap:7px; min-width:0; font-family:var(--font-body); font-weight:500; font-size:13px; color:var(--ink); background:var(--paper); border:1px solid var(--line-2); border-radius:10px; padding:7px 14px; text-decoration:none; transition:transform .16s ease, border-color .16s ease, background .16s ease, color .16s ease; }
+  .biz > span:not(.ar):not(.tagad){ min-width:0; }
   .biz:hover{ border-color:var(--accent); color:var(--accent-ink); background:var(--accent-soft); transform:translateY(-1px); }
   .biz .ar{ font-size:11px; color:var(--ink-3); transition:color .16s ease; }
   .biz:hover .ar{ color:var(--accent-ink); }
-  .biz.sponsor{ background:var(--earth-soft); border:1px dashed var(--earth-line); color:var(--earth-ink); }
+  .biz.sponsor{ grid-column:1 / -1; background:var(--earth-soft); border:1px dashed var(--earth-line); color:var(--earth-ink); justify-content:flex-start; }
   .biz.sponsor:hover{ border-color:var(--earth); background:var(--earth-soft); transform:translateY(-1px); }
   .biz .tagad{ font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; background:var(--earth); color:#fff; border-radius:5px; padding:2px 6px; }
+  .pull{
+    margin:6px 0 8px; padding:clamp(24px,4vw,42px);
+    border:1px solid var(--earth-line); border-radius:18px;
+    background:linear-gradient(135deg, color-mix(in oklab, var(--earth-soft) 78%, var(--paper)), var(--paper));
+  }
+  .pull blockquote{ margin:0; font-family:var(--font-display); font-size:clamp(30px,4vw,48px); line-height:1.05; color:var(--earth-ink); }
+  .pull blockquote span{ color:var(--ink); }
+  .pull cite{ display:block; margin-top:12px; font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); font-style:normal; }
   @media (max-width:760px){
     .bitem{ grid-template-columns:1fr; gap:22px; padding:38px 0; }
     .bitem:nth-child(even) .bmedia{ order:0; }
     .bmedia{ order:-1; }
-    .bmedia .ph{ aspect-ratio:16/10; }
+    .bmedia .ph{ aspect-ratio:16/10; min-height:0; }
+    .bl-row{ grid-template-columns:1fr; }
   }
 
   /* ---------- spotlight ---------- */
-  .spot{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(22px,4vw,48px); align-items:center; }
-  .spot .ph{ aspect-ratio:4/5; }
+  .spot{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(22px,4vw,48px); align-items:stretch; }
+  .spot .ph{ aspect-ratio:auto; min-height:100%; }
   .spot .label{ display:inline-block; font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--earth-ink); margin-bottom:14px; }
   .spot h2{ font-size:clamp(30px,4vw,48px); }
   .spot .why{ margin-top:18px; color:var(--ink-2); font-size:1.02em; }
   .spot dl{ margin:26px 0 0; display:grid; gap:0; }
-  .spot dl div{ display:grid; grid-template-columns:120px 1fr; gap:14px; padding:13px 0; border-top:1px solid var(--line); }
+  .spot dl div{ display:grid; grid-template-columns:120px 1fr; gap:14px; padding:13px 0; border-top:1px solid var(--line-2); }
   .spot dt{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); padding-top:2px; }
   .spot dd{ margin:0; color:var(--ink); }
-  @media (max-width:760px){ .spot{ grid-template-columns:1fr; } .spot .ph{ aspect-ratio:16/10; order:-1; } }
+  @media (max-width:760px){ .spot{ grid-template-columns:1fr; } .spot .ph{ aspect-ratio:16/10; min-height:0; order:-1; } }
 
   /* ---------- day trip timeline + gamification ---------- */
-  .trip{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
-  .leg{ background:var(--paper); padding:22px 22px 24px; min-height:210px; display:flex; flex-direction:column; transition:background .3s ease; cursor:pointer; }
+  .trip{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-2); border:1px solid var(--line-2); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); }
+  .leg{ background:color-mix(in oklab, var(--paper) 94%, #fff); padding:22px 22px 24px; min-height:210px; display:flex; flex-direction:column; transition:background .3s ease; cursor:pointer; }
   .leg.done{ background:var(--accent-soft); }
   .leg-top{ display:flex; align-items:center; justify-content:space-between; }
   .leg .t{ font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--earth-ink); }
@@ -251,10 +401,12 @@
   .leg .dotline .ln{ flex:1; height:1px; background:var(--accent-line); }
   .leg h4{ font-family:var(--font-display); font-size:21px; font-weight:500; margin:0 0 8px; }
   .leg p{ margin:0; color:var(--ink-2); font-size:.92em; }
+  .leg .cost{ margin-top:auto; padding-top:18px; font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--earth-ink); }
   @media (max-width:860px){ .trip{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:480px){ .trip{ grid-template-columns:1fr; } .leg{ min-height:0; } }
 
   .trip-foot{ margin-top:22px; display:flex; flex-wrap:wrap; gap:14px 18px; align-items:center; }
+  .daytotal{ font-family:var(--font-mono); font-size:12px; letter-spacing:.05em; color:var(--earth-ink); background:var(--earth-soft); border:1px solid var(--earth-line); border-radius:10px; padding:8px 12px; }
   .legcount{ font-family:var(--font-mono); font-size:12px; letter-spacing:.05em; color:var(--ink-2); display:flex; align-items:center; gap:9px; }
   .legcount b{ color:var(--accent-ink); }
   .legbar{ width:120px; height:6px; border-radius:999px; background:var(--paper-3); overflow:hidden; }
@@ -324,7 +476,7 @@
   .guide-page-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
   .guide-page-card{
     display:grid; grid-template-rows:auto 1fr; min-height:100%; overflow:hidden;
-    background:var(--paper-2); border:1px solid var(--line); border-radius:18px;
+    background:color-mix(in oklab, var(--paper) 90%, #fff); border:1px solid var(--line-2); border-radius:18px;
     color:inherit; text-decoration:none; box-shadow:var(--shadow);
     transition:transform .16s ease, border-color .16s ease, background .16s ease;
   }
@@ -344,6 +496,69 @@
   @media (max-width:600px){
     .guide-page-grid{ grid-template-columns:1fr; }
     .eats-grid, .evergreen-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- nature watch + local texture ---------- */
+  .wild-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .wild{ border:1px solid var(--line-2); border-radius:16px; padding:22px 22px 20px; background:color-mix(in oklab, var(--paper) 91%, #fff); display:flex; flex-direction:column; box-shadow:0 16px 36px -30px oklch(0.2 0.03 245 / .48); }
+  .wild .w-top{ display:flex; align-items:center; gap:12px; }
+  .wild .orb{ width:34px; height:34px; border-radius:50%; flex:none; border:1px solid var(--line); }
+  .wild .orb.manatee{ background:radial-gradient(circle at 38% 34%, color-mix(in oklab,var(--accent) 40%,var(--paper)), color-mix(in oklab,var(--accent) 70%,var(--paper))); }
+  .wild .orb.scallop{ background:radial-gradient(circle at 38% 34%, color-mix(in oklab,var(--sun) 42%,var(--paper)), color-mix(in oklab,var(--earth) 60%,var(--paper))); }
+  .wild .orb.birds{ background:radial-gradient(circle at 38% 34%, color-mix(in oklab,var(--storm) 36%,var(--paper)), color-mix(in oklab,var(--ink-3) 40%,var(--paper))); }
+  .wild h4{ font-family:var(--font-display); font-size:21px; font-weight:500; margin:0; }
+  .wild .status{ display:inline-flex; align-items:center; gap:7px; margin-top:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:5px 11px; border-radius:10px; width:max-content; }
+  .wild .status.go{ color:var(--accent-ink); background:var(--accent-soft); border:1px solid var(--accent-line); }
+  .wild .status.soon{ color:var(--earth-ink); background:var(--earth-soft); border:1px solid var(--earth-line); }
+  .wild .status .s-dot{ width:7px; height:7px; border-radius:50%; background:currentColor; }
+  .wild p{ margin:14px 0 0; color:var(--ink-2); font-size:.93em; }
+  .wild .meter{ margin-top:16px; }
+  .wild .meter .lab{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.04em; color:var(--ink-3); margin-bottom:7px; }
+  .wild .meter .track{ height:6px; border-radius:999px; background:var(--paper-3); overflow:hidden; }
+  .wild .meter .track i{ display:block; height:100%; border-radius:999px; }
+  .wild .meter .track i.acc{ background:var(--accent); }
+  .wild .meter .track i.ert{ background:var(--earth); }
+  .gems-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:6px; }
+  .gem{ display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start; padding:22px; border:1px solid var(--earth-line); border-radius:16px; background:color-mix(in oklab, var(--earth-soft) 88%, var(--paper)); box-shadow:0 16px 36px -30px oklch(0.2 0.03 245 / .44); }
+  .gem .gn{ font-family:var(--font-display); font-size:34px; line-height:.9; color:var(--earth-ink); font-weight:400; }
+  .gem h4{ font-family:var(--font-display); font-size:20px; font-weight:500; margin:0; }
+  .gem .tag-spot{ font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--earth-ink); }
+  .gem p{ margin:9px 0 0; color:var(--ink-2); font-size:.92em; }
+  .gem a.maplink{ display:inline-block; margin-top:11px; font-family:var(--font-mono); font-size:11px; color:var(--earth-ink); text-decoration:none; border-bottom:1px solid var(--earth-line); }
+  .gem a.maplink:hover{ color:var(--earth); }
+  .gems-fine{ margin-top:22px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.03em; color:var(--ink-3); }
+  .onlyhere{ border-top:1px solid var(--line); }
+  .oddity{
+    position:relative; overflow:hidden; border-radius:18px; padding:clamp(30px,5vw,60px);
+    background:radial-gradient(130% 150% at 100% 0%, color-mix(in oklab, var(--earth) 30%, var(--paper)), transparent 55%), var(--earth-soft);
+    border:1px solid var(--earth-line); display:grid; grid-template-columns:auto 1fr; gap:clamp(24px,4vw,52px); align-items:center;
+  }
+  .oddity .big{ font-family:var(--font-display); font-size:clamp(72px,12vw,150px); line-height:.82; font-weight:400; color:var(--earth-ink); }
+  .oddity .big small{ display:block; font-family:var(--font-mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--earth-ink); margin-top:10px; }
+  .oddity .od-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--earth-ink); }
+  .oddity h3{ font-size:clamp(24px,3vw,34px); margin:12px 0 0; max-width:24ch; }
+  .oddity p{ margin:14px 0 0; color:var(--ink-2); max-width:54ch; }
+  .tipbox{ display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(26px,4vw,52px); align-items:center; background:var(--paper-2); border:1px solid var(--line); border-radius:18px; padding:clamp(26px,3.5vw,44px); box-shadow:var(--shadow); }
+  .tipbox h3{ font-size:clamp(26px,3.4vw,38px); }
+  .tipbox .tlead{ margin-top:14px; color:var(--ink-2); max-width:42ch; }
+  .tipform{ display:grid; gap:12px; }
+  .tipform .frow{ display:flex; gap:12px; flex-wrap:wrap; }
+  .tipform input, .tipform textarea{ width:100%; font-family:var(--font-body); font-size:15px; color:var(--ink); background:var(--paper); border:1px solid var(--line-2); border-radius:12px; padding:13px 16px; outline:none; transition:border-color .2s ease, box-shadow .2s ease; resize:vertical; }
+  .tipform .frow input{ flex:1; min-width:160px; }
+  .tipform textarea{ min-height:90px; }
+  .tipform input:focus, .tipform textarea:focus{ border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-soft); }
+  .tipform .frow2{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .tipform .fine{ font-family:var(--font-mono); font-size:11px; letter-spacing:.02em; color:var(--ink-3); }
+  .tip-ok{ display:none; align-items:center; gap:14px; background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:16px; padding:18px 20px; }
+  .tip-ok.show{ display:flex; }
+  .tip-ok .ck{ flex:none; width:38px; height:38px; border-radius:50%; background:var(--accent); color:#fff; display:grid; place-items:center; font-size:19px; }
+  .tip-ok p{ margin:0; color:var(--ink); font-size:.95em; }
+  .tipform.hide{ display:none; }
+  @media (max-width:860px){ .wild-grid{ grid-template-columns:1fr; } }
+  @media (max-width:760px){
+    .gems-grid{ grid-template-columns:1fr; }
+    .oddity{ grid-template-columns:1fr; }
+    .tipbox{ grid-template-columns:1fr; }
   }
 
   /* ---------- meetups ---------- */
@@ -373,31 +588,32 @@
   /* ---------- conditions ---------- */
   .cond{ display:grid; gap:18px; }
   .cond-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:18px; }
-  .panel{ background:var(--paper-2); border:1px solid var(--line); border-radius:16px; padding:24px 26px; }
+  .panel{ background:color-mix(in oklab, var(--paper) 86%, #fff); border:1px solid var(--line-2); border-radius:16px; padding:24px 26px; box-shadow:0 16px 36px -32px oklch(0.2 0.03 245 / .50); }
   .panel .ph-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
-  .today{ display:flex; flex-direction:column; }
-  .today .now{ display:flex; align-items:baseline; gap:16px; margin-top:8px; }
-  .today .big-temp{ font-family:var(--font-display); font-size:clamp(54px,7vw,72px); line-height:.85; font-weight:400; color:var(--ink); }
-  .today .word{ display:block; font-family:var(--font-body); font-weight:600; font-size:17px; color:var(--ink); letter-spacing:0; text-transform:none; }
-  .today .hilo{ font-family:var(--font-mono); font-size:12px; color:var(--ink-2); margin-top:3px; }
-  .today .stats{ display:grid; grid-template-columns:1fr 1fr; gap:14px 18px; margin-top:auto; padding-top:22px; }
-  .today .stats div{ font-family:var(--font-mono); font-size:12px; color:var(--ink-2); }
-  .today .stats b{ display:block; color:var(--ink-3); font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:500; margin-bottom:3px; }
-  .water{ display:flex; flex-direction:column; }
-  .water .wrow{ display:flex; align-items:baseline; justify-content:space-between; gap:14px; padding:13px 0; border-top:1px solid var(--line); }
-  .water .wrow:nth-of-type(1){ border-top:0; }
-  .water .wname{ font-size:14px; color:var(--ink); }
-  .water .wname small{ display:block; font-family:var(--font-mono); font-size:11px; color:var(--ink-3); margin-top:2px; }
-  .water .temp{ font-family:var(--font-display); font-size:26px; line-height:1; color:var(--accent-ink); white-space:nowrap; }
-  .week{ display:grid; grid-template-columns:repeat(5,1fr); }
-  .week .day{ text-align:center; padding:6px 8px; border-left:1px solid var(--line); }
-  .week .day:first-child{ border-left:0; }
-  .week .day .dn{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
-  .week .day .dot{ width:9px; height:9px; border-radius:50%; margin:11px auto; }
-  .week .day .dot.sun{ background:var(--earth); }
-  .week .day .dot.storm{ background:var(--accent); }
-  .week .day .wd{ font-family:var(--font-body); font-size:11.5px; color:var(--ink-2); }
-  .week .day .wt{ font-family:var(--font-mono); font-size:13px; color:var(--ink); margin-top:6px; }
+  .today-wx{ position:relative; overflow:hidden; display:flex; flex-direction:column;
+    background:radial-gradient(120% 130% at 8% 0%, color-mix(in oklab, var(--sun) 28%, var(--paper-2)), transparent 52%), radial-gradient(130% 130% at 100% 100%, color-mix(in oklab, var(--storm) 22%, var(--paper-2)), transparent 56%), var(--paper-2);
+  }
+  .today-wx .now{ display:flex; align-items:center; gap:18px; margin-top:10px; flex-wrap:wrap; }
+  .today-wx .big-temp{ font-family:var(--font-display); font-size:clamp(54px,7vw,72px); line-height:.85; font-weight:400; color:var(--ink); }
+  .today-wx .now .lbl .word2{ display:block; font-family:var(--font-body); font-weight:600; font-size:17px; color:var(--ink); }
+  .today-wx .now .lbl .hilo{ font-family:var(--font-mono); font-size:12px; color:var(--ink-2); margin-top:3px; }
+  .today-wx .stats{ display:grid; grid-template-columns:1fr 1fr; gap:14px 18px; margin-top:auto; padding-top:22px; }
+  .today-wx .stats div{ font-family:var(--font-mono); font-size:12px; color:var(--ink-2); }
+  .today-wx .stats b{ display:block; color:var(--ink-3); font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:500; margin-bottom:3px; }
+  .waterp{ display:flex; flex-direction:column; }
+  .waterp .wrow{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px 0; border-top:1px solid var(--line); }
+  .waterp .wrow:nth-of-type(1){ border-top:0; }
+  .waterp .wname{ font-size:14px; color:var(--ink); }
+  .waterp .wname small{ display:block; font-family:var(--font-mono); font-size:11px; color:var(--ink-3); margin-top:2px; }
+  .waterp .temp{ font-family:var(--font-display); font-size:26px; line-height:1; color:var(--accent-ink); white-space:nowrap; }
+  .weekfc{ display:grid; grid-template-columns:repeat(5,1fr); }
+  .weekfc .day{ text-align:center; padding:14px 8px; border-left:1px solid var(--line); display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .weekfc .day:first-child{ border-left:0; }
+  .weekfc .day .dn{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .weekfc .day .wd{ font-family:var(--font-body); font-size:11.5px; color:var(--ink-2); }
+  .weekfc .day .wt{ font-family:var(--font-mono); font-size:13px; color:var(--ink); }
+  .weekfc .day .wt b{ color:var(--ink); }
+  .weekfc .day .wt s{ text-decoration:none; color:var(--ink-3); }
   .heads{ display:grid; gap:0; }
   .heads .hd{ display:grid; grid-template-columns:auto 1fr; gap:14px; padding:14px 0; border-top:1px solid var(--line); align-items:start; }
   .heads .hd:first-child{ border-top:0; }
@@ -407,7 +623,7 @@
   .heads .hd p{ margin:0; color:var(--ink-2); font-size:.96em; }
   .heads .hd p b{ color:var(--ink); font-weight:600; }
   .cond-note{ margin-top:6px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.03em; color:var(--ink-3); }
-  @media (max-width:760px){ .cond-grid{ grid-template-columns:1fr; } .week{ grid-template-columns:repeat(5,1fr); font-size:.85em; } }
+  @media (max-width:760px){ .cond-grid{ grid-template-columns:1fr; } .weekfc{ grid-template-columns:repeat(5,1fr); font-size:.85em; } }
 
   /* ---------- advertise ---------- */
   .adv{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(26px,4vw,56px); align-items:start; }
@@ -492,13 +708,18 @@
       <a href="#join" class="btn">Join the list</a>
     </div>
     <nav class="week-nav" aria-label="This week sections">
-      <a href="#brief" data-target="brief">Briefing</a>
-      <a href="#spotlight" data-target="spotlight">Place</a>
+      <a href="#top" data-target="top">Masthead</a>
+      <a href="#today" data-target="today">Today</a>
+      <a href="#brief" data-target="brief">The Briefing</a>
+      <a href="#spotlight" data-target="spotlight">Place of the Week</a>
       <a href="#trip" data-target="trip">Day Trip</a>
-      <a href="#guide-pages" data-target="guide-pages">Guides</a>
-      <a href="#meetups" data-target="meetups">Events</a>
-      <a href="#conditions" data-target="conditions">Weather</a>
-      <a href="#advertise" data-target="advertise">Advertise</a>
+      <a href="#guide-pages" data-target="guide-pages">Eat &amp; Drink</a>
+      <a href="#wildlife" data-target="wildlife">Nature Watch</a>
+      <a href="#meetups" data-target="meetups">Meetups</a>
+      <a href="#gems" data-target="gems">Hidden Gems</a>
+      <a href="#conditions" data-target="conditions">Conditions</a>
+      <a href="#onlyhere" data-target="onlyhere">Only Here</a>
+      <a href="#tip" data-target="tip">Send a Tip</a>
       <a href="#join" data-target="join">Join</a>
     </nav>
   </header>
@@ -509,22 +730,67 @@
     <!-- MASTHEAD -->
     <section class="mast" id="top" data-screen-label="Masthead" style="border-top:0;">
       <div class="wrap">
-        <div class="col rv in">
-          <div class="kicker">Nature Coast Pulse · This Week</div>
-          <div class="dateline">
-            <span class="pill">Pilot Issue 001</span>
-            <span>Thursday, June 4, 2026</span>
-            <span>Crystal River · Homosassa · Ocala · Gainesville</span>
-          </div>
-          <h1>Clear springs, greasy breakfasts, and a coast worth <em>showing up</em> for.</h1>
-          <p class="lead">Your standing field guide to Florida's Nature Coast — where to go, what to do, and how this wild, beautiful stretch of Florida comes alive. Five things this week, in the order you should do them.</p>
-        </div>
-        <div class="hero-img rv">
-          <div class="ph">
+        <div class="hero-stage rv in">
+          <div class="ph hero-ph">
             <img alt="Three Sisters Springs, Crystal River" data-photo="" src="https://commons.wikimedia.org/wiki/Special:FilePath/Three_sisters_springs_near_crystal_river_national_wildlife_refuge.jpg?width=1600">
             <span class="tag">PHOTO · Three Sisters Springs — clear-water aerial</span>
           </div>
-          <div class="hero-cap">Three Sisters Springs, Crystal River · via Wikimedia Commons</div>
+          <div class="hero-box">
+            <div class="kicker">Nature Coast Pulse · This Week</div>
+            <div class="dateline">
+              <span class="pill live"><span class="blip"></span>Live this week</span>
+              <span>Issue 002 · June 1-7, 2026</span>
+              <span>Crystal River · Homosassa · Ocala · Gainesville</span>
+            </div>
+            <h1>Clear springs, greasy breakfasts, and a coast worth <em>showing up</em> for.</h1>
+            <p class="lead">Hey neighbor: here's your friendly field guide to Florida's Nature Coast. Where to go today, what to do this week, where to eat without blowing the budget, and how this weird, wonderful stretch of Florida actually works.</p>
+          </div>
+        </div>
+        <div class="hero-cap">Three Sisters Springs, Crystal River · via Wikimedia Commons</div>
+      </div>
+    </section>
+
+    <!-- TODAY ON THE COAST -->
+    <section class="daybyday" id="today" data-screen-label="Today">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="no">*</span>
+          <div>
+            <h2>Today on the coast</h2>
+            <p class="sub">One easy thing to do today, plus the week at a glance so the guide feels useful fast.</p>
+          </div>
+        </div>
+        <div class="today-row">
+          <article class="today-card rv" id="today-card">
+            <div class="stamp">
+              <span class="wx lg sun"></span>
+              <div>
+                <div class="day-name">Today</div>
+                <div class="day-date">&nbsp;</div>
+              </div>
+            </div>
+            <div class="ritual">Daily dose</div>
+            <h3>Sunrise float at Hunter Springs.</h3>
+            <p>Go early, keep it slow, and let the clear water do the heavy lifting before the heat and storms wake up.</p>
+            <div class="tline">
+              <span class="tmeta t-place"><b>Place</b> Hunter Springs</span>
+              <span class="tmeta"><b>$</b> <span class="t-cost">Free park stop / rental optional</span></span>
+            </div>
+          </article>
+
+          <aside class="weekrail rv">
+            <div class="wr-head">
+              <span class="t">Your week, day by day</span>
+              <span class="scallop">Scallops Jul 1</span>
+            </div>
+            <div class="daycell" data-day="0"><div class="dc-day"><span class="dn">Sun</span><span class="dd">7</span></div><div class="dc-pick">Riverside live music<small>Homosassa, afternoon</small></div><span class="wx part"></span><span class="nowtag">Now</span></div>
+            <div class="daycell" data-day="1"><div class="dc-day"><span class="dn">Mon</span><span class="dd">1</span></div><div class="dc-pick">Sunrise float<small>Hunter Springs, 6:45am</small></div><span class="wx sun"></span><span class="nowtag">Now</span></div>
+            <div class="daycell" data-day="2"><div class="dc-day"><span class="dn">Tue</span><span class="dd">2</span></div><div class="dc-pick">Paddle and lunch<small>Kings Bay to downtown</small></div><span class="wx sun"></span><span class="nowtag">Now</span></div>
+            <div class="daycell" data-day="3"><div class="dc-day"><span class="dn">Wed</span><span class="dd">3</span></div><div class="dc-pick">Manatees, early<small>Three Sisters Springs</small></div><span class="wx part"></span><span class="nowtag">Now</span></div>
+            <div class="daycell" data-day="4"><div class="dc-day"><span class="dn">Thu</span><span class="dd">4</span></div><div class="dc-pick">Ozello sunset drive<small>Peck's Old Port Cove</small></div><span class="wx part"></span><span class="nowtag">Now</span></div>
+            <div class="daycell" data-day="5"><div class="dc-day"><span class="dn">Fri</span><span class="dd">5</span></div><div class="dc-pick">Market night<small>Town Square, 5-9pm</small></div><span class="wx sun"></span><span class="nowtag">Now</span></div>
+            <div class="daycell" data-day="6"><div class="dc-day"><span class="dn">Sat</span><span class="dd">6</span></div><div class="dc-pick">Cleanup and long swim<small>Kings Bay Park, 8am</small></div><span class="wx storm"></span><span class="nowtag">Now</span></div>
+          </aside>
         </div>
       </div>
     </section>
@@ -536,7 +802,7 @@
           <span class="no">01</span>
           <div>
             <h2>The briefing</h2>
-            <p class="sub">Five real places and local moves, arranged as an easy route for a great week out.</p>
+            <p class="sub">Five real places and moves, in the order we'd actually do them. Not a vibe: a route you can follow.</p>
           </div>
         </div>
 
@@ -583,6 +849,11 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="pull rv">
+            <blockquote>"Order the thing that's bad for you. <span>You're on coast time now.</span>"</blockquote>
+            <cite>The only rule that matters after a spring morning</cite>
           </div>
 
           <div class="bitem rv">
@@ -702,29 +973,33 @@
           </div>
         </div>
         <div class="trip rv">
-          <div class="leg" data-leg="morning">
+          <div class="leg" data-leg="morning" data-lo="45" data-hi="90">
             <div class="leg-top"><span class="t">Morning</span><button class="check" aria-label="Mark morning done"></button></div>
             <div class="dotline"><i></i><span class="ln"></span></div>
             <h4>Get in the water</h4>
             <p>Clear-kayak or a manatee-season tour on Kings Bay while it's glassy.</p>
+            <span class="cost">$45-90 rental or tour</span>
           </div>
-          <div class="leg" data-leg="midday">
+          <div class="leg" data-leg="midday" data-lo="14" data-hi="24">
             <div class="leg-top"><span class="t">Midday</span><button class="check" aria-label="Mark midday done"></button></div>
             <div class="dotline"><i></i><span class="ln"></span></div>
             <h4>Local lunch</h4>
             <p>Refuel at The Biscuit Barn or Sadie's with a plate that feels like the right kind of vacation choice.</p>
+            <span class="cost">$14-24 per person</span>
           </div>
-          <div class="leg" data-leg="afternoon">
+          <div class="leg" data-leg="afternoon" data-lo="0" data-hi="10">
             <div class="leg-top"><span class="t">Afternoon</span><button class="check" aria-label="Mark afternoon done"></button></div>
             <div class="dotline"><i></i><span class="ln"></span></div>
             <h4>Slow float</h4>
             <p>Hunter Springs for an easy swim, a quiet float, and a little extra time in the clear water.</p>
+            <span class="cost">Free-$10 park stop</span>
           </div>
-          <div class="leg" data-leg="evening">
+          <div class="leg" data-leg="evening" data-lo="0" data-hi="8">
             <div class="leg-top"><span class="t">Evening</span><button class="check" aria-label="Mark evening done"></button></div>
             <div class="dotline"><i></i></div>
             <h4>Sunset</h4>
             <p>Drive out to Fort Island Beach and let the Gulf do the closing.</p>
+            <span class="cost">Free-$8 parking / snacks</span>
           </div>
         </div>
         <div class="bizlinks" style="margin-top:20px;">
@@ -737,6 +1012,7 @@
           </div>
         </div>
         <div class="trip-foot rv">
+          <span class="daytotal">Est. day: $<b id="cost-lo">59</b>-$<b id="cost-hi">132</b></span>
           <span class="legcount"><span class="legbar"><i id="legbar"></i></span><span><b id="legcount">0</b> / 4 stops done</span></span>
           <span class="badge" id="badge"><span class="star">★</span> Kings Bay Day — badge earned</span>
           <button class="linkbtn" id="resetlegs" hidden="">Reset</button>
@@ -781,6 +1057,52 @@
             </div>
           </a>
         </div>
+      </div>
+    </section>
+
+    <div class="visual-break rv" aria-label="Homosassa food and water guide marker">
+      <img alt="Homosassa fish market near the Nature Coast water" src="https://commons.wikimedia.org/wiki/Special:FilePath/The_fish_market_in_Homosassa,_Florida.jpg?width=1600">
+      <div class="wrap">
+        <div class="break-copy">
+          <div class="kicker">Guide marker</div>
+          <h3>Routes, food, and water belong together here.</h3>
+          <p>The standalone guides stay easy to reach, while the weekly issue keeps pointing you toward the right next move.</p>
+          <a href="eats.html">Open Eats -></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- WILDLIFE & NATURE WATCH -->
+    <section id="wildlife" data-screen-label="Nature Watch">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="no">05</span>
+          <div>
+            <h2>Wildlife &amp; nature watch</h2>
+            <p class="sub">What's moving out there right now, so you know what you're likely to see and what to leave alone.</p>
+          </div>
+        </div>
+        <div class="wild-grid">
+          <div class="wild rv">
+            <div class="w-top"><span class="orb manatee"></span><h4>Manatees</h4></div>
+            <span class="status go"><span class="s-dot"></span>Summer scatter</span>
+            <p>The big winter herds have spread out for warm-season feeding. You'll still spot a few grazing in the rivers. Give them space, no touching, and idle speed in the bay.</p>
+            <div class="meter"><div class="lab"><span>Sighting odds now</span><span>Fair</span></div><div class="track"><i class="acc" style="width:45%"></i></div></div>
+          </div>
+          <div class="wild rv">
+            <div class="w-top"><span class="orb scallop"></span><h4>Scallops</h4></div>
+            <span class="status soon"><span class="s-dot"></span>Opens Jul 1</span>
+            <p>Citrus County's season opens July 1 and runs through late September. Snorkel the grass flats off Homosassa and Crystal River once the window opens.</p>
+            <div class="meter"><div class="lab"><span>Countdown to open</span><span>About 4 weeks</span></div><div class="track"><i class="ert" style="width:80%"></i></div></div>
+          </div>
+          <div class="wild rv">
+            <div class="w-top"><span class="orb birds"></span><h4>Shorebirds</h4></div>
+            <span class="status go"><span class="s-dot"></span>Active now</span>
+            <p>Ospreys, herons, spoonbills, and wading flocks work the marsh edges at dawn. First light on Ozello or Fort Island is the quiet show.</p>
+            <div class="meter"><div class="lab"><span>Best at</span><span>First light</span></div><div class="track"><i class="acc" style="width:88%"></i></div></div>
+          </div>
+        </div>
+        <p class="ev-note">Wildlife notes follow FWC guidance. Seasons and rules can change, so check <a href="https://myfwc.com/" target="_blank" rel="noopener" style="color:var(--accent-ink); border-bottom:1px solid var(--accent-line); text-decoration:none;">myfwc.com</a> before you go.</p>
       </div>
     </section>
 
@@ -894,11 +1216,75 @@
       </div>
     </section>
 
+    <!-- HIDDEN GEMS -->
+    <section id="gems" data-screen-label="Hidden Gems">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="no">07</span>
+          <div>
+            <h2>Hidden gems</h2>
+            <p class="sub">The locals-only stuff people half-jokingly ask us not to print. Tread lightly and leave it nice.</p>
+          </div>
+        </div>
+        <div class="gems-grid">
+          <div class="gem rv">
+            <span class="gn">i</span>
+            <div>
+              <span class="tag-spot">Quiet launch</span>
+              <h4>Hunter Springs before the lot fills</h4>
+              <p>The difference between magical and chaotic is usually one hour. Get there before the day really starts and keep the paddle simple.</p>
+              <a class="maplink" href="https://www.discovercrystalriverfl.com/directory/hunter-springs-park-boardwalks/" target="_blank" rel="noopener">Launch point -></a>
+            </div>
+          </div>
+          <div class="gem rv">
+            <span class="gn">ii</span>
+            <div>
+              <span class="tag-spot">Sunset road</span>
+              <h4>Ozello when the marsh goes gold</h4>
+              <p>Do not hurry the drive. Pull over where it is safe, listen to the flats, then finish with seafood while the sky keeps changing.</p>
+              <a class="maplink" href="https://www.discovercrystalriverfl.com/directory/ozello-park/" target="_blank" rel="noopener">Find Ozello Park -></a>
+            </div>
+          </div>
+          <div class="gem rv">
+            <span class="gn">iii</span>
+            <div>
+              <span class="tag-spot">Old Florida</span>
+              <h4>The Freezer after a Homosassa wander</h4>
+              <p>Not polished. Correctly weird. Go for shrimp, cold drinks, and the kind of local texture that makes the drive feel earned.</p>
+              <a class="maplink" href="eats.html">Open Eats -></a>
+            </div>
+          </div>
+          <div class="gem rv">
+            <span class="gn">iv</span>
+            <div>
+              <span class="tag-spot">Breakfast move</span>
+              <h4>Biscuits before springs</h4>
+              <p>The water is better when you are not hungry. Anchor the morning with breakfast, then keep the route loose enough to follow the weather.</p>
+              <a class="maplink" href="eats.html">Find breakfast stops -></a>
+            </div>
+          </div>
+        </div>
+        <p class="gems-fine">Got a gem of your own? Send it below; we will keep names quiet if that is the deal.</p>
+      </div>
+    </section>
+
+    <div class="visual-break rv" aria-label="Ozello marsh weather guide marker">
+      <img alt="Crystal River Preserve marshland near Ozello" src="https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park_2.jpg?width=1600">
+      <div class="wrap">
+        <div class="break-copy">
+          <div class="kicker">Before you go</div>
+          <h3>The weather gets a vote.</h3>
+          <p>Afternoon storms, Gulf breeze, and hot pavement shape the day as much as any itinerary does.</p>
+          <a href="#conditions">Check weather -></a>
+        </div>
+      </div>
+    </div>
+
     <!-- CONDITIONS -->
     <section id="conditions" data-screen-label="Weather">
       <div class="wrap">
         <div class="sec-head rv">
-          <span class="no">07</span>
+          <span class="no">08</span>
           <div>
             <h2>Conditions</h2>
             <p class="sub">What the weather and water are doing right now — and anything that'll mess with your plans this week.</p>
@@ -906,11 +1292,12 @@
         </div>
         <div class="cond">
           <div class="cond-grid rv">
-            <div class="panel today">
+            <div class="panel today-wx">
               <span class="ph-label">Today · Crystal River</span>
               <div class="now">
+                <span class="wx lg part"></span>
                 <span class="big-temp">90°</span>
-                <span><span class="word">Hot, PM storms likely</span><span class="hilo">High 90° · Low 73° · feels 98°</span></span>
+                <span class="lbl"><span class="word2">Hot, PM storms likely</span><span class="hilo">High 90° · Low 73° · feels 98°</span></span>
               </div>
               <div class="stats">
                 <div><b>Wind</b>SE 8 mph</div>
@@ -919,7 +1306,7 @@
                 <div><b>Sun</b>6:32a → 8:24p</div>
               </div>
             </div>
-            <div class="panel water">
+            <div class="panel waterp">
               <span class="ph-label">Water temps</span>
               <div class="wrow"><span class="wname">Three Sisters / Hunter Springs<small>spring-fed, near-constant</small></span><span class="temp">73°</span></div>
               <div class="wrow"><span class="wname">Kings Bay / Crystal River<small>tidal, warms through the day</small></span><span class="temp">83°</span></div>
@@ -927,12 +1314,12 @@
             </div>
           </div>
 
-          <div class="panel week rv">
-            <div class="day"><div class="dn">Thu</div><div class="dot storm"></div><div class="wd">Storms PM</div><div class="wt">90° / 73°</div></div>
-            <div class="day"><div class="dn">Fri</div><div class="dot storm"></div><div class="wd">Scattered</div><div class="wt">91° / 74°</div></div>
-            <div class="day"><div class="dn">Sat</div><div class="dot sun"></div><div class="wd">Partly sunny</div><div class="wt">90° / 75°</div></div>
-            <div class="day"><div class="dn">Sun</div><div class="dot storm"></div><div class="wd">Storms PM</div><div class="wt">89° / 74°</div></div>
-            <div class="day"><div class="dn">Mon</div><div class="dot sun"></div><div class="wd">Hot, humid</div><div class="wt">91° / 75°</div></div>
+          <div class="panel weekfc rv">
+            <div class="day"><div class="dn">Thu</div><div class="wx storm"></div><div class="wd">Storms PM</div><div class="wt"><b>90°</b> <s>73°</s></div></div>
+            <div class="day"><div class="dn">Fri</div><div class="wx part"></div><div class="wd">Scattered</div><div class="wt"><b>91°</b> <s>74°</s></div></div>
+            <div class="day"><div class="dn">Sat</div><div class="wx sun"></div><div class="wd">Partly sunny</div><div class="wt"><b>90°</b> <s>75°</s></div></div>
+            <div class="day"><div class="dn">Sun</div><div class="wx storm"></div><div class="wd">Storms PM</div><div class="wt"><b>89°</b> <s>74°</s></div></div>
+            <div class="day"><div class="dn">Mon</div><div class="wx sun"></div><div class="wd">Hot, humid</div><div class="wt"><b>91°</b> <s>75°</s></div></div>
           </div>
 
           <div class="heads rv">
@@ -947,11 +1334,58 @@
       </div>
     </section>
 
+    <!-- ONLY HERE -->
+    <section id="onlyhere" class="onlyhere" data-screen-label="Only Here">
+      <div class="wrap">
+        <div class="oddity rv">
+          <div class="big">1924<small>Only-here history</small></div>
+          <div>
+            <span class="od-label">This week, but a century ago</span>
+            <h3>Silver Springs helped turn glass-bottom boats into the classic Florida day trip.</h3>
+            <p>Long before theme parks, clear spring water made this part of Florida feel impossible. That old day-trip energy still runs through the Nature Coast: weird, practical, gorgeous, and better when you actually go.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- READER TIP -->
+    <section id="tip" data-screen-label="Send a Tip">
+      <div class="wrap">
+        <div class="tipbox rv">
+          <div>
+            <div class="kicker">Reader tips</div>
+            <h3>You know a spot. Spill it.</h3>
+            <p class="tlead">A quiet launch, a perfect cheap breakfast, a sunset nobody talks about. Send it our way and it might land in next week's issue.</p>
+          </div>
+          <div>
+            <form class="tipform" id="tipform" novalidate="">
+              <div class="frow">
+                <input id="tip-spot" type="text" placeholder="The spot" aria-label="The spot" required="">
+              </div>
+              <textarea id="tip-note" placeholder="Why it is good, when to go, what to order..." aria-label="Why it is good"></textarea>
+              <div class="frow">
+                <input id="tip-name" type="text" placeholder="Your name (optional)" aria-label="Your name">
+                <input id="tip-email" type="email" placeholder="Email (optional)" aria-label="Email">
+              </div>
+              <div class="frow2">
+                <span class="fine">Saves locally for now. No account, no spam.</span>
+                <button type="submit" class="btn earth">Send the tip</button>
+              </div>
+            </form>
+            <div class="tip-ok" id="tip-ok">
+              <div class="ck">✓</div>
+              <p><b>Got it. Thank you, neighbor.</b> We read every tip and keep names quiet when asked.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ADVERTISE -->
     <section id="advertise" data-screen-label="Advertise">
       <div class="wrap">
         <div class="sec-head rv">
-          <span class="no">08</span>
+          <span class="no">09</span>
           <div>
             <h2>Advertise</h2>
             <p class="sub">Early-stage local sponsorship — useful placement for businesses that genuinely fit the guide. No fake audience numbers, no media-kit nonsense.</p>
@@ -1254,6 +1688,21 @@
       renderDayTrips();
       renderEats();
 
+      function initTodayModule(){
+        var date = new Date();
+        var names = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var month = date.toLocaleDateString(undefined, { month:'long' });
+        var todayCard = document.getElementById('today-card');
+        var dayName = todayCard ? todayCard.querySelector('.day-name') : null;
+        var dayDate = todayCard ? todayCard.querySelector('.day-date') : null;
+        if(dayName) dayName.textContent = names[date.getDay()];
+        if(dayDate) dayDate.textContent = month + ' ' + date.getDate();
+        document.querySelectorAll('.daycell').forEach(function(cell){
+          cell.classList.toggle('is-today', Number(cell.getAttribute('data-day')) === date.getDay());
+        });
+      }
+      initTodayModule();
+
       function setActiveSection(id){
         railLinks.forEach(function(l){ l.classList.toggle('active', l.getAttribute('data-target') === id); });
         weekNavLinks.forEach(function(l){ l.classList.toggle('active', l.getAttribute('data-target') === id); });
@@ -1288,6 +1737,15 @@
       }
       window.addEventListener('scroll', onScroll, { passive:true });
       onScroll();
+      if(location.hash){
+        window.setTimeout(function(){
+          var target = document.getElementById(location.hash.slice(1));
+          if(target){
+            target.scrollIntoView({ block:'start', behavior:'auto' });
+            onScroll();
+          }
+        }, 80);
+      }
 
       var rio = new IntersectionObserver(function(entries){
         entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target); } });
@@ -1310,6 +1768,8 @@
       var legcount = document.getElementById('legcount');
       var legbar = document.getElementById('legbar');
       var resetBtn = document.getElementById('resetlegs');
+      var costLo = document.getElementById('cost-lo');
+      var costHi = document.getElementById('cost-hi');
       var TKEY = 'ncp_trip_kingsbay';
       var done = {};
       try { done = JSON.parse(localStorage.getItem(TKEY) || '{}') || {}; } catch(e){ done = {}; }
@@ -1317,14 +1777,20 @@
       function persist(){ try { localStorage.setItem(TKEY, JSON.stringify(done)); } catch(e){} }
       function render(animate){
         var count = 0;
+        var lo = 0;
+        var hi = 0;
         legs.forEach(function(leg){
           var id = leg.getAttribute('data-leg');
           var isDone = !!done[id];
           leg.classList.toggle('done', isDone);
           if(isDone) count++;
+          lo += Number(leg.getAttribute('data-lo') || 0);
+          hi += Number(leg.getAttribute('data-hi') || 0);
         });
         legcount.textContent = String(count);
         legbar.style.width = (count/legs.length*100) + '%';
+        if(costLo) costLo.textContent = String(lo);
+        if(costHi) costHi.textContent = String(hi);
         resetBtn.hidden = count === 0;
         if(count === legs.length){ badge.classList.add('show'); }
         else { badge.classList.remove('show'); }
@@ -1339,6 +1805,34 @@
       });
       resetBtn.addEventListener('click', function(ev){ ev.stopPropagation(); done = {}; persist(); render(); });
       render(false);
+
+      /* reader tip flow */
+      var tipForm = document.getElementById('tipform');
+      var tipOk = document.getElementById('tip-ok');
+      if(tipForm && tipOk){
+        tipForm.addEventListener('submit', function(ev){
+          ev.preventDefault();
+          var spot = document.getElementById('tip-spot');
+          if(!spot || !spot.value.trim()){
+            if(spot) spot.focus();
+            return;
+          }
+          var tip = {
+            spot: spot.value.trim(),
+            note: (document.getElementById('tip-note') || {}).value || '',
+            name: (document.getElementById('tip-name') || {}).value || '',
+            email: (document.getElementById('tip-email') || {}).value || '',
+            at: new Date().toISOString()
+          };
+          try {
+            var list = JSON.parse(localStorage.getItem('ncp_reader_tips') || '[]');
+            list.unshift(tip);
+            localStorage.setItem('ncp_reader_tips', JSON.stringify(list.slice(0, 20)));
+          } catch(e){}
+          tipForm.classList.add('hide');
+          tipOk.classList.add('show');
+        });
+      }
 
       /* join flow */
       var form = document.getElementById('joinform');
