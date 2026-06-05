@@ -235,13 +235,27 @@
   .archive-head{ margin:36px 0 16px; display:flex; justify-content:space-between; gap:18px; align-items:end; flex-wrap:wrap; }
   .archive-head h3{ font-size:clamp(24px,3vw,34px); }
   .archive-head p{ margin:6px 0 0; color:var(--ink-2); max-width:58ch; }
-  .trip-archive, .eats-grid, .evergreen-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .daytrip-library{ display:grid; gap:28px; }
+  .archive-trip{ background:var(--paper-2); border:1px solid var(--line); border-radius:18px; overflow:hidden; box-shadow:var(--shadow); }
+  .archive-trip-head{ display:grid; grid-template-columns:1fr .72fr; gap:0; border-bottom:1px solid var(--line); }
+  .archive-trip-copy{ padding:clamp(24px,4vw,38px); }
+  .archive-trip-copy h3{ font-size:clamp(28px,4vw,42px); margin-top:10px; }
+  .archive-trip-copy p{ color:var(--ink-2); margin:14px 0 0; max-width:56ch; }
+  .archive-trip .ph{ border:0; border-left:1px solid var(--line); border-radius:0; min-height:260px; height:100%; }
+  .archive-trip .trip{ border:0; border-radius:0; border-top:0; }
+  .archive-trip .leg{ min-height:170px; cursor:default; }
+  .archive-trip .leg:hover .check{ border-color:var(--line-2); }
+  .archive-trip .check{ display:none; }
+  .archive-trip .bizlinks{ margin:0; padding:18px clamp(22px,4vw,34px); border-top:1px dashed var(--line-2); }
+  .eats-grid, .evergreen-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
   .trip-card, .eat-card{
     background:var(--paper-2); border:1px solid var(--line); border-radius:16px;
-    padding:22px; min-height:100%; display:flex; flex-direction:column; text-decoration:none; color:inherit;
+    min-height:100%; display:flex; flex-direction:column; text-decoration:none; color:inherit; overflow:hidden;
     transition:transform .16s ease, border-color .16s ease, background .16s ease;
   }
   .trip-card:hover, .eat-card:hover{ transform:translateY(-2px); border-color:var(--accent-line); background:var(--accent-soft); }
+  .eat-media{ aspect-ratio:16/10; border:0; border-radius:0; border-bottom:1px solid var(--line); }
+  .eat-body{ padding:22px; display:flex; flex-direction:column; flex:1; }
   .card-top{ display:flex; justify-content:space-between; gap:12px; align-items:start; margin-bottom:14px; }
   .card-kicker{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--earth-ink); }
   .card-date{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-3); white-space:nowrap; }
@@ -262,10 +276,12 @@
   @media (max-width:900px){
     .feature-trip{ grid-template-columns:1fr; }
     .feature-trip .ph{ min-height:260px; aspect-ratio:16/10; }
-    .trip-archive, .eats-grid, .evergreen-grid{ grid-template-columns:1fr 1fr; }
+    .archive-trip-head{ grid-template-columns:1fr; }
+    .archive-trip .ph{ border-left:0; border-top:1px solid var(--line); aspect-ratio:16/10; min-height:0; }
+    .eats-grid, .evergreen-grid{ grid-template-columns:1fr 1fr; }
   }
   @media (max-width:600px){
-    .trip-archive, .eats-grid, .evergreen-grid{ grid-template-columns:1fr; }
+    .eats-grid, .evergreen-grid{ grid-template-columns:1fr; }
   }
 
   /* ---------- meetups ---------- */
@@ -443,8 +459,8 @@
         <div class="brief">
           <div class="bitem rv">
             <div class="bmedia"><div class="ph">
-              <img alt="Three Sisters Springs clear water" data-photo="" src="https://commons.wikimedia.org/wiki/Special:FilePath/Three_sisters_springs_near_crystal_river_national_wildlife_refuge.jpg?width=1000">
-              <span class="tag">PHOTO · Three Sisters Springs, Kings Bay</span>
+              <img alt="Crystal River waterway near Hunter Spring Run" data-photo="" src="https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_near_Hunter_Spring_Run_-_panoramio.jpg?width=1000">
+              <span class="tag">PHOTO · Crystal River near Hunter Spring Run</span>
             </div></div>
             <div class="btext">
               <div class="bnum"><span class="n">1</span><span class="blabel">Do first</span></div>
@@ -465,8 +481,8 @@
 
           <div class="bitem rv">
             <div class="bmedia"><div class="ph">
-              <img alt="Clear Florida spring" data-photo="" src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Three_sisters_springs_near_crystal_river_national_wildlife_refuge.jpg">
-              <span class="tag">PHOTO · Spring-fed channel, turquoise</span>
+              <img alt="Hunter Spring in Crystal River" data-photo="" src="https://commons.wikimedia.org/wiki/Special:FilePath/FlHunterSpring.jpg?width=1000">
+              <span class="tag">PHOTO · Hunter Spring, Crystal River</span>
             </div></div>
             <div class="btext">
               <div class="bnum"><span class="n">2</span><span class="blabel">Place spotlight</span></div>
@@ -565,8 +581,8 @@
         </div>
         <div class="spot">
           <div class="ph rv">
-            <img alt="Three Sisters Springs swimmers" data-photo="" src="https://commons.wikimedia.org/wiki/Special:FilePath/Three_sisters_springs_near_crystal_river_national_wildlife_refuge.jpg?width=1100">
-            <span class="tag">PHOTO · Three Sisters Springs — turquoise channel</span>
+            <img alt="Crystal River in Crystal River Florida" data-photo="" src="https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_in_Crystal_River01.jpg?width=1100">
+            <span class="tag">PHOTO · Crystal River waterway</span>
           </div>
           <div class="meta rv">
             <span class="label">Crystal River · Water</span>
@@ -655,15 +671,14 @@
             <p class="sub">A new route every week, plus a permanent archive you can come back to when the weekend opens up.</p>
           </div>
         </div>
-        <div id="daytrip-feature" class="feature-trip rv"></div>
         <div class="archive-head rv">
           <div>
             <h3>Trip archive</h3>
-            <p>Each weekly idea becomes a durable guide with stops, timing, verified links, and sponsor inventory that keeps working after the issue rolls over.</p>
+            <p>The archived trips keep the same itinerary format as the weekly feature: image, timing, stops, links, and sponsor inventory that keeps working after the issue rolls over.</p>
           </div>
           <a href="#advertise" class="btn ghost">Sponsor a route →</a>
         </div>
-        <div id="daytrip-archive" class="trip-archive"></div>
+        <div id="daytrip-archive" class="daytrip-library"></div>
         <p class="ev-note">Archive seed checked June 4, 2026. New weekly day trips should be added as records, not hand-built sections.</p>
       </div>
     </section>
@@ -919,42 +934,82 @@
           status: 'This week',
           title: 'Kings Bay Clear-Water Loop',
           dek: 'A bright, easy Crystal River day: clear kayak or snorkel early, local lunch, Hunter Springs float, and a Fort Island sunset.',
-          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Three_sisters_springs_near_crystal_river_national_wildlife_refuge.jpg?width=1100',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_near_Hunter_Spring_Run_-_panoramio.jpg?width=1100',
+          imageLabel: 'Crystal River near Hunter Spring Run',
           tags: ['Water', 'Easy', 'First trip'],
           stops: [
-            ['Morning', 'Kings Bay paddle or snorkel'],
-            ['Midday', 'Biscuit Barn or Sadie\'s'],
-            ['Afternoon', 'Hunter Springs float'],
-            ['Sunset', 'Fort Island Gulf Beach']
+            ['Morning', 'Get in the water', 'Paddle or snorkel Kings Bay while the water is bright.'],
+            ['Midday', 'Local lunch', 'Biscuit Barn or Sadie\'s keeps the loop easy.'],
+            ['Afternoon', 'Slow float', 'Hunter Springs for a swim and extra clear-water time.'],
+            ['Sunset', 'Gulf close', 'Fort Island Gulf Beach for the closing view.']
           ],
-          href: 'https://www.fws.gov/apps/refuge/crystal-river/visit-us'
+          links: [
+            ['Crystal River Refuge', 'https://www.fws.gov/apps/refuge/crystal-river/visit-us'],
+            ['Hunter Springs', 'https://www.discovercrystalriverfl.com/directory/hunter-springs-park-boardwalks/'],
+            ['Fort Island Beach', 'https://www.discovercrystalriverfl.com/directory/fort-island-gulf-beach/']
+          ]
         },
         {
-          issue: 'Archive',
+          issue: 'Archive 002',
           date: 'Classic',
           status: 'Day trip',
           title: 'Silver Springs Boat and Paddle Day',
           dek: 'Glass-bottom boats for the timeless view, then a slow paddle if you want the river to stretch out a little longer.',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Silver_Springs_State_Park_-_Headspring_Entrance_Sign.jpg?width=1100',
+          imageLabel: 'Silver Springs State Park',
           tags: ['Springs', 'Family', 'Ocala'],
-          href: 'https://silversprings.com/plan-your-day/glass-bottom-boats/'
+          stops: [
+            ['Morning', 'Boat first', 'Book a glass-bottom boat and get the classic spring view.'],
+            ['Late AM', 'Walk the headspring', 'Look for fish, turtles, birds, and glassy water.'],
+            ['Lunch', 'Ocala pause', 'Keep it easy near the park or downtown Ocala.'],
+            ['Afternoon', 'Add a paddle', 'Rent a kayak if the river is calling.']
+          ],
+          links: [
+            ['Glass-bottom boats', 'https://silversprings.com/plan-your-day/glass-bottom-boats/'],
+            ['Plan the park day', 'https://silversprings.com/plan-your-day/'],
+            ['Kayak rentals', 'https://kayakingsilversprings.com/silver-springs-kayak-rentals']
+          ]
         },
         {
-          issue: 'Archive',
+          issue: 'Archive 003',
           date: 'Sunset',
           status: 'Food loop',
           title: 'Ozello Seafood Sunset Run',
           dek: 'Cruise the marsh road at golden hour, stop for Ozello seafood, and make the whole evening feel like a small discovery.',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park_2.jpg?width=1100',
+          imageLabel: 'Crystal River Preserve marshland',
           tags: ['Seafood', 'Sunset', 'Drive'],
-          href: 'https://www.discovercrystalriverfl.com/directory/ozello-park/'
+          stops: [
+            ['Late day', 'Take the trail', 'Drive Ozello Trail as the marsh opens up.'],
+            ['Dinner', 'Seafood stop', 'Choose Peck\'s or Backwater Fins for the meal.'],
+            ['Golden hour', 'Walk Ozello Park', 'Watch the light shift across the marsh.'],
+            ['After', 'Roll back easy', 'Head toward Crystal River with the windows down.']
+          ],
+          links: [
+            ['Ozello Park', 'https://www.discovercrystalriverfl.com/directory/ozello-park/'],
+            ['Peck\'s Old Port Cove', 'https://www.discovercrystalriverfl.com/directory/pecks-old-port-cove/'],
+            ['Backwater Fins', 'https://backwater-fins.com/']
+          ]
         },
         {
-          issue: 'Archive',
+          issue: 'Archive 004',
           date: 'Easy',
           status: 'Beach',
           title: 'Fort Island Gulf Beach Reset',
           dek: 'A low-friction sunset plan with Gulf air, picnic potential, and a quick route back into Crystal River for dinner.',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Dolphin_at_Fort_Island_Gulf_Beach.jpg?width=1100',
+          imageLabel: 'Fort Island Gulf Beach',
           tags: ['Beach', 'Sunset', 'Easy'],
-          href: 'https://www.discovercrystalriverfl.com/directory/fort-island-gulf-beach/'
+          stops: [
+            ['Afternoon', 'Head west', 'Pack light and take Fort Island Trail toward the Gulf.'],
+            ['Beach', 'Settle in', 'Swim, walk the shore, or sit with the Gulf breeze.'],
+            ['Sunset', 'Stay for color', 'Let the light stretch out over the flats.'],
+            ['Dinner', 'Close in town', 'Return to Crystal River for an easy dinner.']
+          ],
+          links: [
+            ['Fort Island Beach', 'https://www.discovercrystalriverfl.com/directory/fort-island-gulf-beach/'],
+            ['Crystal River events', 'https://www.discovercrystalriverfl.com/events/']
+          ]
         }
       ];
 
@@ -966,6 +1021,8 @@
           place: 'Ozello Trail · seafood',
           badges: ['Waterfront', 'Brunch', 'Seafood'],
           href: 'https://backwater-fins.com/',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park.jpg?width=1000',
+          imageLabel: 'Crystal River Preserve near Ozello',
           featured: true
         },
         {
@@ -975,6 +1032,8 @@
           place: 'Ozello · seafood',
           badges: ['Classic', 'Dinner', 'Drive-worthy'],
           href: 'https://www.discovercrystalriverfl.com/directory/pecks-old-port-cove/',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park_2.jpg?width=1000',
+          imageLabel: 'Ozello-area marshland',
           featured: true
         },
         {
@@ -984,6 +1043,8 @@
           place: 'Homosassa · tiki bar',
           badges: ['Unique', 'Casual', 'Shrimp'],
           href: 'https://the-freezer-homosassa.com/',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/The_fish_market_in_Homosassa,_Florida.jpg?width=1000',
+          imageLabel: 'Homosassa fish market',
           featured: true
         },
         {
@@ -992,7 +1053,9 @@
           dek: 'A useful breakfast anchor before springs, paddles, errands, or a Crystal River loop.',
           place: 'Crystal River · breakfast',
           badges: ['Breakfast', 'Local', 'Quick stop'],
-          href: 'https://www.discovercrystalriverfl.com/directory/biscuit-barn-north-crystal-river-breakfast-diners/'
+          href: 'https://www.discovercrystalriverfl.com/directory/biscuit-barn-north-crystal-river-breakfast-diners/',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_Street_in_Crystal_River,_Florida.jpg?width=1000',
+          imageLabel: 'Crystal River streetscape'
         },
         {
           lane: 'Local lunch',
@@ -1000,7 +1063,9 @@
           dek: 'A small local kitchen that fits the easy lunch slot in the Kings Bay day-trip loop.',
           place: 'Crystal River · lunch',
           badges: ['Local', 'Lunch', 'Loop stop'],
-          href: 'https://m.facebook.com/SadiesCornerKitchen/'
+          href: 'https://m.facebook.com/SadiesCornerKitchen/',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_in_Crystal_River05.jpg?width=1000',
+          imageLabel: 'Crystal River waterway'
         }
       ];
 
@@ -1013,28 +1078,33 @@
         return (items || []).map(function(item){ return '<span class="chip">' + esc(item) + '</span>'; }).join('');
       }
       function renderDayTrips(){
-        var feature = document.getElementById('daytrip-feature');
         var archive = document.getElementById('daytrip-archive');
-        if(!feature || !archive) return;
-        var current = dayTrips[0];
-        feature.innerHTML =
-          '<div class="ph"><img alt="' + esc(current.title) + '" data-photo src="' + esc(current.image) + '"><span class="tag">PHOTO · ' + esc(current.title) + '</span></div>' +
-          '<div class="feature-body">' +
-            '<div class="card-kicker">' + esc(current.status) + ' · ' + esc(current.issue) + '</div>' +
-            '<h3>' + esc(current.title) + '</h3>' +
-            '<p>' + esc(current.dek) + '</p>' +
-            '<ul class="stop-list">' + current.stops.map(function(stop){ return '<li><b>' + esc(stop[0]) + '</b><span>' + esc(stop[1]) + '</span></li>'; }).join('') + '</ul>' +
-            '<div class="card-tags">' + chips(current.tags) + '</div>' +
-            '<div class="bl-row" style="margin-top:22px;"><a class="biz" href="' + esc(current.href) + '" target="_blank" rel="noopener">Verified route source <span class="ar">↗</span></a><a class="biz sponsor" href="#advertise">Sponsor this route <span class="tagad">Sponsor</span></a></div>' +
-          '</div>';
-        archive.innerHTML = dayTrips.slice(1).map(function(trip){
-          return '<a class="trip-card rv" href="' + esc(trip.href) + '" target="_blank" rel="noopener">' +
-            '<div class="card-top"><span class="card-kicker">' + esc(trip.status) + '</span><span class="card-date">' + esc(trip.date) + '</span></div>' +
-            '<h4>' + esc(trip.title) + '</h4>' +
-            '<p>' + esc(trip.dek) + '</p>' +
-            '<div class="card-tags">' + chips(trip.tags) + '</div>' +
-            '<span class="card-link">Open verified source ↗</span>' +
-          '</a>';
+        if(!archive) return;
+        archive.innerHTML = dayTrips.map(function(trip){
+          var legs = trip.stops.map(function(stop, idx){
+            return '<div class="leg">' +
+              '<div class="leg-top"><span class="t">' + esc(stop[0]) + '</span></div>' +
+              '<div class="dotline"><i></i>' + (idx < trip.stops.length - 1 ? '<span class="ln"></span>' : '') + '</div>' +
+              '<h4>' + esc(stop[1]) + '</h4>' +
+              '<p>' + esc(stop[2]) + '</p>' +
+            '</div>';
+          }).join('');
+          var links = (trip.links || []).map(function(link){
+            return '<a class="biz" href="' + esc(link[1]) + '" target="_blank" rel="noopener">' + esc(link[0]) + ' <span class="ar">↗</span></a>';
+          }).join('');
+          return '<article class="archive-trip rv">' +
+            '<div class="archive-trip-head">' +
+              '<div class="archive-trip-copy">' +
+                '<div class="card-top"><span class="card-kicker">' + esc(trip.status) + ' · ' + esc(trip.issue) + '</span><span class="card-date">' + esc(trip.date) + '</span></div>' +
+                '<h3>' + esc(trip.title) + '</h3>' +
+                '<p>' + esc(trip.dek) + '</p>' +
+                '<div class="card-tags">' + chips(trip.tags) + '</div>' +
+              '</div>' +
+              '<div class="ph"><img alt="' + esc(trip.imageLabel || trip.title) + '" data-photo src="' + esc(trip.image) + '"><span class="tag">PHOTO · ' + esc(trip.imageLabel || trip.title) + '</span></div>' +
+            '</div>' +
+            '<div class="trip">' + legs + '</div>' +
+            '<div class="bizlinks"><span class="bl-label">Plan this itinerary</span><div class="bl-row">' + links + '<a class="biz sponsor" href="#advertise">Sponsor this itinerary <span class="tagad">Sponsor</span></a></div></div>' +
+          '</article>';
         }).join('');
       }
       function renderEats(){
@@ -1043,12 +1113,14 @@
         if(!radar || !evergreen) return;
         function card(item){
           return '<a class="eat-card rv' + (item.featured ? ' featured' : '') + '" href="' + esc(item.href) + '" target="_blank" rel="noopener">' +
-            '<div class="card-top"><span class="card-kicker">' + esc(item.lane) + '</span></div>' +
-            '<h4>' + esc(item.title) + '</h4>' +
-            '<p>' + esc(item.dek) + '</p>' +
-            '<div class="rating-row"><span>' + esc(item.place) + '</span></div>' +
-            '<div class="card-tags">' + chips(item.badges) + '</div>' +
-            '<span class="card-link">Open verified source ↗</span>' +
+            '<div class="ph eat-media"><img alt="' + esc(item.imageLabel || item.title) + '" data-photo src="' + esc(item.image) + '"><span class="tag">PHOTO · ' + esc(item.imageLabel || item.title) + '</span></div>' +
+            '<div class="eat-body">' +
+              '<div class="card-top"><span class="card-kicker">' + esc(item.lane) + '</span></div>' +
+              '<h4>' + esc(item.title) + '</h4>' +
+              '<p>' + esc(item.dek) + '</p>' +
+              '<div class="rating-row"><span>' + esc(item.place) + '</span></div>' +
+              '<div class="card-tags">' + chips(item.badges) + '</div>' +
+            '</div>' +
           '</a>';
         }
         radar.innerHTML = eats.filter(function(item){ return item.featured; }).map(card).join('');
@@ -1091,7 +1163,7 @@
       });
 
       /* day-trip gamification */
-      var legs = Array.prototype.slice.call(document.querySelectorAll('.leg'));
+      var legs = Array.prototype.slice.call(document.querySelectorAll('#trip .leg'));
       var badge = document.getElementById('badge');
       var legcount = document.getElementById('legcount');
       var legbar = document.getElementById('legbar');
