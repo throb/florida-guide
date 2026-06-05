@@ -305,24 +305,30 @@
 
   /* ---------- photo-led visual breaks ---------- */
   .visual-break{
-    position:relative; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-    background:var(--paper-3); min-height:260px; overflow:hidden; isolation:isolate;
+    padding:42px 0; border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2);
+    background:color-mix(in oklab, var(--paper-3) 64%, var(--paper)); isolation:isolate;
   }
-  .visual-break img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
-  .visual-break::after{
+  .break-panel{
+    position:relative; min-height:300px; overflow:hidden; border-radius:18px; border:1px solid var(--line-2);
+    box-shadow:0 26px 58px -42px oklch(0.18 0.03 245 / .68), 0 2px 10px oklch(0.18 0.03 245 / .10);
+    background:var(--paper-3);
+  }
+  .break-panel img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+  .break-panel::after{
     content:""; position:absolute; inset:0; z-index:1;
     background:linear-gradient(90deg, oklch(0.17 0.035 245 / .76), oklch(0.17 0.035 245 / .38) 48%, transparent);
   }
-  .visual-break .wrap{ position:relative; z-index:2; min-height:260px; display:flex; align-items:end; padding-top:44px; padding-bottom:38px; }
+  .break-panel .break-copy{ position:relative; z-index:2; min-height:300px; display:flex; flex-direction:column; justify-content:flex-end; padding:clamp(28px,4vw,44px); }
   .break-copy{ max-width:520px; color:#fff; text-shadow:0 1px 2px oklch(0 0 0 / .35); }
   .break-copy .kicker{ color:color-mix(in oklab, #fff 78%, var(--sun)); }
   .break-copy h3{ font-size:clamp(28px,3.6vw,46px); margin-top:10px; }
   .break-copy p{ margin:12px 0 0; color:oklch(0.94 0.012 95); max-width:48ch; }
   .break-copy a{ display:inline-flex; margin-top:16px; color:#fff; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; text-decoration:none; border-bottom:1px solid color-mix(in oklab, #fff 56%, transparent); }
   @media (max-width:680px){
-    .visual-break{ min-height:230px; }
-    .visual-break::after{ background:linear-gradient(0deg, oklch(0.17 0.035 245 / .78), oklch(0.17 0.035 245 / .22)); }
-    .visual-break .wrap{ min-height:230px; padding-top:34px; padding-bottom:30px; padding-right:48px; }
+    .visual-break{ padding:30px 0; }
+    .break-panel{ min-height:260px; border-radius:14px; }
+    .break-panel::after{ background:linear-gradient(0deg, oklch(0.17 0.035 245 / .78), oklch(0.17 0.035 245 / .22)); }
+    .break-panel .break-copy{ min-height:260px; padding:26px 48px 28px 24px; }
   }
 
   /* ---------- briefing (editorial rows w/ photos) ---------- */
@@ -519,7 +525,13 @@
   .wild .meter .track i.acc{ background:var(--accent); }
   .wild .meter .track i.ert{ background:var(--earth); }
   .gems-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:6px; }
-  .gem{ display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start; padding:22px; border:1px solid var(--earth-line); border-radius:16px; background:color-mix(in oklab, var(--earth-soft) 88%, var(--paper)); box-shadow:0 16px 36px -30px oklch(0.2 0.03 245 / .44); }
+  .gem{
+    display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start; padding:24px;
+    border:1px solid color-mix(in oklab, var(--earth) 58%, var(--line-2));
+    border-radius:16px;
+    background:linear-gradient(180deg, color-mix(in oklab, var(--paper) 96%, #fff) 0%, color-mix(in oklab, var(--paper) 90%, var(--earth-soft)) 100%);
+    box-shadow:0 22px 50px -34px oklch(0.2 0.03 245 / .58), 0 1px 0 color-mix(in oklab, #fff 70%, transparent) inset;
+  }
   .gem .gn{ font-family:var(--font-display); font-size:34px; line-height:.9; color:var(--earth-ink); font-weight:400; }
   .gem h4{ font-family:var(--font-display); font-size:20px; font-weight:500; margin:0; }
   .gem .tag-spot{ font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--earth-ink); }
@@ -1061,13 +1073,15 @@
     </section>
 
     <div class="visual-break rv" aria-label="Homosassa food and water guide marker">
-      <img alt="Homosassa fish market near the Nature Coast water" src="https://commons.wikimedia.org/wiki/Special:FilePath/The_fish_market_in_Homosassa,_Florida.jpg?width=1600">
       <div class="wrap">
-        <div class="break-copy">
-          <div class="kicker">Guide marker</div>
-          <h3>Routes, food, and water belong together here.</h3>
-          <p>The standalone guides stay easy to reach, while the weekly issue keeps pointing you toward the right next move.</p>
-          <a href="eats.html">Open Eats -></a>
+        <div class="break-panel">
+          <img alt="Homosassa fish market near the Nature Coast water" src="https://commons.wikimedia.org/wiki/Special:FilePath/The_fish_market_in_Homosassa,_Florida.jpg?width=1600">
+          <div class="break-copy">
+            <div class="kicker">Guide marker</div>
+            <h3>Routes, food, and water belong together here.</h3>
+            <p>The standalone guides stay easy to reach, while the weekly issue keeps pointing you toward the right next move.</p>
+            <a href="eats.html">Open Eats -></a>
+          </div>
         </div>
       </div>
     </div>
@@ -1269,13 +1283,15 @@
     </section>
 
     <div class="visual-break rv" aria-label="Ozello marsh weather guide marker">
-      <img alt="Crystal River Preserve marshland near Ozello" src="https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park_2.jpg?width=1600">
       <div class="wrap">
-        <div class="break-copy">
-          <div class="kicker">Before you go</div>
-          <h3>The weather gets a vote.</h3>
-          <p>Afternoon storms, Gulf breeze, and hot pavement shape the day as much as any itinerary does.</p>
-          <a href="#conditions">Check weather -></a>
+        <div class="break-panel">
+          <img alt="Crystal River Preserve marshland near Ozello" src="https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park_2.jpg?width=1600">
+          <div class="break-copy">
+            <div class="kicker">Before you go</div>
+            <h3>The weather gets a vote.</h3>
+            <p>Afternoon storms, Gulf breeze, and hot pavement shape the day as much as any itinerary does.</p>
+            <a href="#conditions">Check weather -></a>
+          </div>
         </div>
       </div>
     </div>
