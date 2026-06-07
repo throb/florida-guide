@@ -24,7 +24,8 @@
 
   <main>
     <section class="hero">
-      <img alt="Homosassa fish market" src="https://commons.wikimedia.org/wiki/Special:FilePath/The_fish_market_in_Homosassa,_Florida.jpg?width=1800">
+      <img alt="The Freezer Tiki Bar in Homosassa" src="/api/place-photo?placeId=ChIJIZPrH-w-6IgRN5iLFslzTbM" data-place-photo-meta="/api/place-photo?format=json&amp;placeId=ChIJIZPrH-w-6IgRN5iLFslzTbM" onerror="this.onerror=null;this.classList.add('photo-failed');if(this.parentNode)this.parentNode.classList.add('photo-missing');">
+      <span class="photo-credit"></span>
       <div class="wrap">
         <div class="kicker">Nature Coast Pulse - Eats</div>
         <h1>Food stops with a reason to go.</h1>
@@ -79,20 +80,65 @@
       var radar = document.getElementById('eats-radar');
       var evergreen = document.getElementById('eats-evergreen');
       if(!guide || !radar || !evergreen) return;
+      function mapUrl(item){
+        return item.mapUrl || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.mapQuery || (item.title + ' ' + (item.place || 'Nature Coast Florida')));
+      }
+      function websiteUrl(item){
+        return item.websiteUrl || item.href || '#';
+      }
+      function placePhotoImageUrl(item){
+        var placeId = item.googlePlaceId || item.placeId;
+        if(!placeId && !item.placePhotoQuery) return '';
+        return '/api/place-photo?' + (placeId ? 'placeId=' + encodeURIComponent(placeId) : 'query=' + encodeURIComponent(item.placePhotoQuery));
+      }
+      function placePhotoMetaUrl(item){
+        var placeId = item.googlePlaceId || item.placeId;
+        if(!placeId && !item.placePhotoQuery) return '';
+        return '/api/place-photo?format=json&' + (placeId ? 'placeId=' + encodeURIComponent(placeId) : 'query=' + encodeURIComponent(item.placePhotoQuery));
+      }
+      function imageSrc(item){
+        return placePhotoImageUrl(item) || (item.photoStatus === 'PASS reviewed fallback' ? item.image : '');
+      }
+      function imageAttrs(item){
+        var attrs = ' onerror="this.onerror=null;this.classList.add(\'photo-failed\');if(this.parentNode)this.parentNode.classList.add(\'photo-missing\');"';
+        var metaUrl = placePhotoMetaUrl(item);
+        if(metaUrl) attrs += ' data-place-photo-meta="' + guide.esc(metaUrl) + '"';
+        return attrs;
+      }
+      function actions(item){
+        return '<div class="eat-actions">' +
+          '<a href="' + guide.esc(mapUrl(item)) + '" target="_blank" rel="noopener">MAP</a>' +
+          '<a href="' + guide.esc(websiteUrl(item)) + '" target="_blank" rel="noopener">WEBSITE</a>' +
+        '</div>';
+      }
       function card(item){
-        return '<a class="eat-card' + (item.featured ? ' featured' : '') + '" href="' + guide.esc(item.href) + '" target="_blank" rel="noopener">' +
-          '<div class="ph"><img alt="' + guide.esc(item.imageLabel || item.title) + '" src="' + guide.esc(item.image) + '"></div>' +
+        return '<article class="eat-card' + (item.featured ? ' featured' : '') + '">' +
+          '<div class="ph"><img alt="' + guide.esc(item.imageLabel || item.title) + '" src="' + guide.esc(imageSrc(item)) + '"' + imageAttrs(item) + '><span class="photo-credit"></span></div>' +
           '<div class="eat-body">' +
             '<div class="card-top"><span class="card-kicker">' + guide.esc(item.lane) + '</span></div>' +
             '<h3>' + guide.esc(item.title) + '</h3>' +
             '<p>' + guide.esc(item.dek) + '</p>' +
             '<div class="rating-row"><span>' + guide.esc(item.place) + '</span></div>' +
             '<div class="card-tags">' + guide.chips(item.badges) + '</div>' +
+            actions(item) +
           '</div>' +
-        '</a>';
+        '</article>';
+      }
+      function hydratePhotoCredits(){
+        document.querySelectorAll('img[data-place-photo-meta]').forEach(function(img){
+          fetch(img.getAttribute('data-place-photo-meta')).then(function(response){
+            if(!response.ok) throw new Error('Place photo unavailable');
+            return response.json();
+          }).then(function(payload){
+            var names = (payload.attributions || []).map(function(attr){ return attr.displayName; }).filter(Boolean);
+            var credit = img.parentNode ? img.parentNode.querySelector('.photo-credit') : null;
+            if(credit && names.length) credit.textContent = 'Photo: ' + names.join(', ');
+          }).catch(function(){});
+        });
       }
       radar.innerHTML = guide.eats.filter(function(item){ return item.featured; }).map(card).join('');
       evergreen.innerHTML = guide.eats.filter(function(item){ return !item.featured; }).map(card).join('');
+      hydratePhotoCredits();
     })();
   </script>
 </body>

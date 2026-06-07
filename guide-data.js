@@ -59,7 +59,7 @@ window.NCP_GUIDE = (function(){
       ],
       links: [
         ['Ozello Park', 'https://www.discovercrystalriverfl.com/directory/ozello-park/'],
-        ['Peck\'s Old Port Cove', 'https://www.discovercrystalriverfl.com/directory/pecks-old-port-cove/'],
+        ['Peck\'s Old Port Cove', 'https://pecksoldportcove.com/'],
         ['Backwater Fins', 'https://backwater-fins.com/']
       ]
     },
@@ -93,8 +93,11 @@ window.NCP_GUIDE = (function(){
       place: 'Ozello Trail - seafood',
       badges: ['Waterfront', 'Brunch', 'Seafood'],
       href: 'https://backwater-fins.com/',
-      image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park.jpg?width=1000',
-      imageLabel: 'Crystal River Preserve near Ozello',
+      websiteUrl: 'https://backwater-fins.com/',
+      mapQuery: 'Backwater Fins Ozello FL',
+      placePhotoQuery: 'Backwater Fins Ozello FL',
+      image: '',
+      imageLabel: 'Backwater Fins',
       featured: true
     },
     {
@@ -103,9 +106,12 @@ window.NCP_GUIDE = (function(){
       dek: 'A long-running Ozello stop for seafood, old-Florida atmosphere, and a route-friendly dinner after the marsh drive.',
       place: 'Ozello - seafood',
       badges: ['Classic', 'Dinner', 'Drive-worthy'],
-      href: 'https://www.discovercrystalriverfl.com/directory/pecks-old-port-cove/',
-      image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_Preserve_State_Park_2.jpg?width=1000',
-      imageLabel: 'Ozello-area marshland',
+      href: 'https://pecksoldportcove.com/',
+      websiteUrl: 'https://pecksoldportcove.com/',
+      mapQuery: 'Peck\'s Old Port Cove Crystal River FL',
+      placePhotoQuery: 'Peck\'s Old Port Cove Crystal River FL',
+      image: '',
+      imageLabel: 'Peck\'s Old Port Cove',
       featured: true
     },
     {
@@ -115,8 +121,11 @@ window.NCP_GUIDE = (function(){
       place: 'Homosassa - tiki bar',
       badges: ['Unique', 'Casual', 'Shrimp'],
       href: 'https://the-freezer-homosassa.com/',
-      image: 'https://commons.wikimedia.org/wiki/Special:FilePath/The_fish_market_in_Homosassa,_Florida.jpg?width=1000',
-      imageLabel: 'Homosassa fish market',
+      websiteUrl: 'https://the-freezer-homosassa.com/',
+      mapQuery: 'The Freezer Tiki Bar Homosassa FL',
+      placePhotoQuery: 'The Freezer Tiki Bar Homosassa FL',
+      image: '',
+      imageLabel: 'The Freezer Tiki Bar',
       featured: true
     },
     {
@@ -125,9 +134,12 @@ window.NCP_GUIDE = (function(){
       dek: 'A useful breakfast anchor before springs, paddles, errands, or a Crystal River loop.',
       place: 'Crystal River - breakfast',
       badges: ['Breakfast', 'Local', 'Quick stop'],
-      href: 'https://www.discovercrystalriverfl.com/directory/biscuit-barn-north-crystal-river-breakfast-diners/',
-      image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_Street_in_Crystal_River,_Florida.jpg?width=1000',
-      imageLabel: 'Crystal River streetscape'
+      href: 'https://www.biscuitbarn.net/',
+      websiteUrl: 'https://www.biscuitbarn.net/',
+      mapQuery: 'The Biscuit Barn Crystal River FL',
+      placePhotoQuery: 'The Biscuit Barn Crystal River FL',
+      image: '',
+      imageLabel: 'The Biscuit Barn'
     },
     {
       lane: 'Local lunch',
@@ -136,10 +148,60 @@ window.NCP_GUIDE = (function(){
       place: 'Crystal River - lunch',
       badges: ['Local', 'Lunch', 'Loop stop'],
       href: 'https://m.facebook.com/SadiesCornerKitchen/',
-      image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Crystal_River_in_Crystal_River05.jpg?width=1000',
-      imageLabel: 'Crystal River waterway'
+      websiteUrl: 'https://m.facebook.com/SadiesCornerKitchen/',
+      mapQuery: 'Sadie\'s Corner Kitchen Crystal River FL',
+      placePhotoQuery: 'Sadie\'s Corner Kitchen Crystal River FL',
+      image: '',
+      imageLabel: 'Sadie\'s Corner Kitchen'
     }
   ];
+
+  var PHOTO_VERIFIED_AT = '2026-06-06T18:23:00-07:00';
+  var placePhotoIdentities = {
+    'Backwater Fins': {
+      googlePlaceId: 'ChIJSXTcQ7w46IgRC48Z6MW1VMY',
+      returnedName: 'Backwater Fins',
+      address: '13982 W Ozello Trail, Crystal River, FL 34429, USA',
+      mapUrl: 'https://maps.google.com/?cid=14291247379160600331'
+    },
+    'Peck\'s Old Port Cove': {
+      googlePlaceId: 'ChIJTdi9T0JH6IgRIWAUMlvjfWc',
+      returnedName: 'Peck\'s Old Port Cove',
+      address: '139 N Ozello Trail, Crystal River, FL 34429, USA',
+      mapUrl: 'https://maps.google.com/?cid=7457366538817134625'
+    },
+    'The Freezer Tiki Bar': {
+      googlePlaceId: 'ChIJIZPrH-w-6IgRN5iLFslzTbM',
+      returnedName: 'The Freezer',
+      address: '5590 S Boulevard Dr, Homosassa, FL 34448, USA',
+      mapUrl: 'https://maps.google.com/?cid=12920110213499689015'
+    },
+    'The Biscuit Barn': {
+      googlePlaceId: 'ChIJHRpO3XRB6IgR5YtISIJwLZI',
+      returnedName: 'The Biscuit Barn',
+      address: '1960 US-19, Crystal River, FL 34428, USA',
+      mapUrl: 'https://maps.google.com/?cid=10533198808350231525'
+    },
+    'Sadie\'s Corner Kitchen': {
+      googlePlaceId: 'ChIJuwLPiyhB6IgRDqcbiGTqmtA',
+      returnedName: 'Sadie\'s Corner Kitchen',
+      address: '353 NE 2nd St, Crystal River, FL 34429, USA',
+      mapUrl: 'https://maps.google.com/?cid=15031584423803594510'
+    }
+  };
+
+  function applyPlacePhotoIdentity(item) {
+    var identity = placePhotoIdentities[item.title];
+    if (!identity) return item;
+    item.googlePlaceId = identity.googlePlaceId;
+    item.mapUrl = identity.mapUrl;
+    item.photoStatus = 'PASS exact place photo';
+    item.photoVerifiedAt = PHOTO_VERIFIED_AT;
+    item.photoEvidence = 'Google Places returned ' + identity.returnedName + ' at ' + identity.address + '; first photo visually reviewed as an exact place photo.';
+    return item;
+  }
+
+  eats.forEach(applyPlacePhotoIdentity);
 
   function esc(str){
     return String(str == null ? '' : str).replace(/[&<>"']/g, function(ch){
